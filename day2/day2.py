@@ -8,6 +8,7 @@ def prepare_string(line):
     string = strings[2]
     return [int(limits[0]), int(limits[1]), char, string]
 
+# --- Part One ---
 def validate(parameters):
     min = parameters[0]
     max = parameters[1]
@@ -15,7 +16,7 @@ def validate(parameters):
     count = parameters[3].count(char)
     return min <= count <= max
 
-# --- Part One ---
+
 def count_valid_passwords(lines):
     count = 0
     for line in lines:
@@ -24,7 +25,23 @@ def count_valid_passwords(lines):
             count += 1
     return count
 
+
 # --- Part Two ---
+def count_valid_passwords_pos(lines):
+    count = 0
+    for line in lines:
+        parameters = prepare_string(line)
+        if validate_positions(parameters):
+            count += 1
+    return count
+
+
+def validate_positions(parameters):
+    pos1 = parameters[0]-1
+    pos2 = parameters[1]-1
+    char = parameters[2]
+    password = parameters[3]
+    return (password[pos1] == char) ^ (password[pos2] == char)
 
 
 def main():
@@ -33,6 +50,7 @@ def main():
     f.close()
 
     print(count_valid_passwords(lines))
+    print(count_valid_passwords_pos(lines))
 
 
 if __name__ == '__main__':

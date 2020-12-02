@@ -1,42 +1,51 @@
 # --- Day 1: Report Repair ---
 
-f = open('input.txt')
-known = [1721, 979, 366, 299, 675, 1456]
-lines = f.readlines()
-
-def int_array(arr):
-    temp = []
-    for i in arr:
-        temp.append(int(i))
-    return temp
-
-numbers = int_array(lines)
-
 # --- Part One ---
-def compare_all(i, arr):
-    for n in arr:
-        if n + i == 2020:
-            return n * i
+def compare_all(i, j):
+    if j + i == 2020:
+        return j * i
 
-def brute_force(arr):
-    for i in arr:
-        result = compare_all(i, arr)
-        if result:
-            return result
 
-print(brute_force(numbers))
+def brute_force(numbers):
+    for i in numbers:
+        for j in numbers:
+            result = compare_all(i, j)
+            if result:
+                return result
 
-#--- Part Two ---
-def compare_three(i, arr):
-    for n in arr:
-        for m in arr:
-            if n + m + i == 2020:
-                return n * m * i
 
-def brute_force_three(arr):
-    for i in arr:
-        result = compare_three(i, arr)
-        if result:
-            return result
+# --- Part Two ---
+def compare_three(i, j, k):
+    if i + j + k == 2020:
+        return i * j * k
 
-print(brute_force_three(numbers))
+
+def brute_force_three(numbers):
+    for i in numbers:
+        for j in numbers:
+            for k in numbers:
+                result = compare_three(i, j, k)
+                if result:
+                    return result
+
+
+def int_list(strings):
+    numbers = []
+    for i in strings:
+        numbers.append(int(i))
+    return numbers
+
+
+def main():
+    f = open('input.txt')
+    lines = f.readlines()
+    f.close()
+
+    numbers = int_list(lines)
+
+    print(brute_force(numbers))
+    print(brute_force_three(numbers))
+
+
+if __name__ == '__main__':
+    main()

@@ -1,8 +1,21 @@
 # --- Day 2: Password Philosophy ---
 
+def prepare_string(line: str):
+    return line.strip("\n")
+
+
 # --- Part One ---
-def count_trees(lines):
+def count_trees(lines, move_right, move_down):
     count = 0
+    pos_x = 0
+
+    for line in lines[::move_down]:
+        line = prepare_string(line)
+        wrapping_pos = pos_x % len(line)
+        if "#" == line[wrapping_pos]:
+            count += 1
+
+        pos_x += move_right
     return count
 
 
@@ -13,8 +26,10 @@ def main():
     f = open('input.txt')
     lines = f.readlines()
     f.close()
+    move_right = 3
+    move_down = 1
 
-    print(count_trees(lines))
+    print(count_trees(lines, move_right, move_down))
 
 
 if __name__ == '__main__':

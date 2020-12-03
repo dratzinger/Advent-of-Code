@@ -1,4 +1,6 @@
 # --- Day 2: Password Philosophy ---
+from math import prod
+
 
 def prepare_string(line: str):
     return line.strip("\n")
@@ -20,6 +22,11 @@ def count_trees(lines, move_right, move_down):
 
 
 # --- Part Two ---
+def check_slopes(lines, slopes):
+    tree_counts = []
+    for slope in slopes:
+        tree_counts.append(count_trees(lines, slope[0], slope[1]))
+    return prod(tree_counts)
 
 
 def main():
@@ -30,6 +37,16 @@ def main():
     move_down = 1
 
     print(count_trees(lines, move_right, move_down))
+
+    slopes = [
+        [1, 1],
+        [3, 1],
+        [5, 1],
+        [7, 1],
+        [1, 2]
+    ]
+
+    print(check_slopes(lines, slopes))
 
 
 if __name__ == '__main__':

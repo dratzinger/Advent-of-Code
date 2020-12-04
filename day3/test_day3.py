@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest
 
 from day3 import count_trees, check_slopes
 
@@ -26,9 +26,13 @@ SLOPES = [
 ]
 
 
-class Test(TestCase):
+class Test(unittest.TestCase):
     def test_part_1_known_input(self):
-        self.assertEqual(count_trees(KNOWN_INPUT, MOVE_RIGHT, MOVE_DOWN), 7)
+        self.assertEqual(7, count_trees(KNOWN_INPUT, MOVE_RIGHT, MOVE_DOWN))
 
     def test_part_2_known_input(self):
-        self.assertEqual(check_slopes(KNOWN_INPUT, SLOPES), 336)
+        self.assertEqual(336, check_slopes(KNOWN_INPUT, SLOPES))
+
+
+if __name__ == '__main__':
+    unittest.main()

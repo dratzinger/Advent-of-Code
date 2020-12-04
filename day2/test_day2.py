@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest
 
 from day2 import count_valid_passwords, count_valid_passwords_pos
 
@@ -8,9 +8,13 @@ KNOWN_INPUT = [
     "2-9 c: ccccccccc"]
 
 
-class Test(TestCase):
+class Test(unittest.TestCase):
     def test_part_1_known_input(self):
-        self.assertEqual(count_valid_passwords(KNOWN_INPUT), 2)
+        self.assertEqual(2, count_valid_passwords(KNOWN_INPUT))
 
     def test_part_2_known_input(self):
-        self.assertEqual(count_valid_passwords_pos(KNOWN_INPUT), 1)
+        self.assertEqual(1, count_valid_passwords_pos(KNOWN_INPUT))
+
+
+if __name__ == '__main__':
+    unittest.main()

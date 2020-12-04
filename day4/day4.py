@@ -24,23 +24,24 @@ def split_into_pairs(line: str):
 def part_one(lines):
     count = 0
     data = []
+    lines_remaining = len(lines)
     for line in lines:
+        lines_remaining -= 1
         pairs = split_into_pairs(line)
-        if len(pairs) < 1:
-            count += int(validate(data))
+        data.extend(pairs)
+        if len(pairs) < 1 or not lines_remaining:
+            count += required_fields_present(data)
             data.clear()
-        else:
-            data.extend(pairs)
     return count
 
 
-def validate(data):
-    required = REQUIRED_FIELDS.copy()
+def required_fields_present(data):
+    missing = REQUIRED_FIELDS.copy()
     for pair in data:
         key = pair[0]
-        if key in required:
-            required.remove(key)
-    return not len(required)
+        if key in missing:
+            missing.remove(key)
+    return len(missing) == 0
 
 
 # --- Part Two ---

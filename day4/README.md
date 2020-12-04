@@ -39,7 +39,7 @@ iyr:2011 ecl:brn hgt:59in
 
 The first passport is **valid** - all eight fields are present. The second passport is **invalid** - it is missing `hgt` (the Height field).
 
-The third passport is interesting; the *only missing field* is `cid`, so it looks like data from North Pole Credentials, not a passport at  all! Surely, nobody would mind if you made the system temporarily ignore missing `cid` fields.  Treat this "passport" as *valid*.
+The third passport is interesting; the **only missing field** is `cid`, so it looks like data from North Pole Credentials, not a passport at  all! Surely, nobody would mind if you made the system temporarily ignore missing `cid` fields.  Treat this "passport" as **valid**.
 
 The fourth passport is missing two fields, `cid` and `byr`. Missing `cid` is fine, but missing any other field is not, so this passport is **invalid**.
 
@@ -61,27 +61,10 @@ You can continue to ignore the `cid` field, but each other field has strict rule
 
 - `eyr` (Expiration Year) - four digits; at least `2020` and at most `2030`.
 
-- ```
-  hgt
-  ```
-
-   (Height) - a number followed by either 
-
-  ```
-  cm
-  ```
-
-   or 
-
-  ```
-  in
-  ```
-
-  :  
-
-  - If `cm`, the number must be at least `150` and at most `193`.
+- `hgt` (Height) - a number followed by either `cm` or `in`:  
+- If `cm`, the number must be at least `150` and at most `193`.
   - If `in`, the number must be at least `59` and at most `76`.
-
+  
 - `hcl` (Hair Color) - a `#` followed by exactly six characters `0`-`9` or `a`-`f`.
 
 - `ecl` (Eye Color) - exactly one of: `amb` `blu` `brn` `gry` `grn` `hzl` `oth`.
@@ -148,3 +131,4 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 ```
 
 Count the number of **valid** passports - those that have all required fields **and valid values**. Continue to treat `cid` as optional. **In your batch file, how many passports are valid?**
+

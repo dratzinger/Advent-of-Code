@@ -6,7 +6,7 @@ ugly hacked together solutions for [AoC 2020](https://adventofcode.com/2020/)
 | Day 1   | :star: :star: |
 | Day 2   | :star: :star: |
 | Day 3   | :star: :star: |
-| Day 4   | :star:        |
+| Day 4   | :star: :star: |
 | Day 5   | :star: :star: |
 | Day 6   |               |
 | Day 7   |               |

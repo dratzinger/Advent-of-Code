@@ -88,7 +88,7 @@ def valid_height(height):
 
 
 def valid_hair_color(color):
-    return bool(re.search("^#[1-9a-f]{6}$", color))
+    return bool(re.search("^#[0-9a-f]{6}$", color))
 
 
 def valid_eye_color(color):

@@ -1,6 +1,6 @@
 import unittest
 
-from day4 import part_one, part_two
+from day4 import *
 
 KNOWN_INPUT = [
     "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd",
@@ -59,6 +59,66 @@ class Test(unittest.TestCase):
 
     def test_part_2_invalid_input(self):
         self.assertEqual(0, part_two(INVALID_DATA))
+
+    def test_part_2_birth_year(self):
+        for i in ["1920", "1950", "2002"]:
+            self.assertTrue(valid_birth_year(i))
+
+    def test_part_2_invalid_birth_year(self):
+        for i in ["0", "1919", "2003", "2020"]:
+            self.assertFalse(valid_birth_year(i))
+
+    def test_part_2_issue_year(self):
+        for i in ["2010", "2015", "2020"]:
+            self.assertTrue(valid_issue_year(i))
+
+    def test_part_2_invalid_issue_year(self):
+        for i in ["0", "1919", "2009", "2021"]:
+            self.assertFalse(valid_issue_year(i))
+
+    def test_part_2_expiration_year(self):
+        for i in ["2020", "2025", "2030"]:
+            self.assertTrue(valid_expiration_year(i))
+
+    def test_part_2_invalid_expiration_year(self):
+        for i in ["0", "2019", "2031", "3000"]:
+            self.assertFalse(valid_expiration_year(i))
+
+    def test_part_2_height(self):
+        for i in ["60in", "190cm", "150cm", "193cm", "59in", "76in"]:
+            self.assertTrue(valid_height(i))
+
+    def test_part_2_invalid_height(self):
+        for i in ["190in", "190", "149cm", "194cm", "58in", "77in"]:
+            self.assertFalse(valid_height(i))
+
+    def test_part_2_hair_color(self):
+        for i in ["#123abc", "#000000", "#ffffff"]:
+            self.assertTrue(valid_hair_color(i))
+
+    def test_part_2_invalid_hair_color(self):
+        for i in ["#123abz", "123abc", "#111abcd", "#1111abc", "ddddddd"]:
+            self.assertFalse(valid_hair_color(i))
+
+    def test_part_2_eye_color(self):
+        for i in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]:
+            self.assertTrue(valid_eye_color(i))
+
+    def test_part_2_invalid_eye_color(self):
+        for i in ["lil", "yel", "gre", "wht", "blk", "vio", "san"]:
+            self.assertFalse(valid_eye_color(i))
+
+    def test_part_2_passport_id(self):
+        for i in ["000000001", "100000001", "999999999"]:
+            self.assertTrue(valid_passport_id(i))
+
+    def test_part_2_invalid_passport_id(self):
+        for i in ["0", "0123456789", "2003"]:
+            self.assertFalse(valid_passport_id(i))
+
+    def test_part_2_country_id(self):
+        for i in ["000000001", "100000001", "999999999", "0", "0123456789", "2003"]:
+            self.assertTrue(valid_country_id(i))
 
 
 if __name__ == '__main__':

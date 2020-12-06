@@ -1,13 +1,19 @@
 # --- Day 6: Custom Customs ---
-def prepare_string(line: str):
-    return line.strip("\n")
-
+from util.parser import get_input_grouped
 
 # --- Part One ---
-def part_one(lines):
-    count = 0
-    return count
+def count_answers(data):
+    counts = []
+    for group in data:
+        answers = set()
+        for entry in group:
+            answers = answers.union(set(entry))
+        counts.append(len(answers))
+        answers.clear()
+    return counts
 
+def sum_answers(data):
+    return sum(count_answers(data))
 
 # --- Part Two ---
 def part_two(lines):
@@ -16,12 +22,9 @@ def part_two(lines):
 
 
 def main():
-    f = open('input.txt')
-    lines = f.readlines()
-    f.close()
-
-    print(part_one(lines))
-    print(part_two(lines))
+    data = get_input_grouped()
+    print(sum_answers(data))
+    print(part_two(data))
 
 
 if __name__ == '__main__':

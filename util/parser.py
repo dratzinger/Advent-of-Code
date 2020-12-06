@@ -18,6 +18,6 @@ def __input_blocks(lines, block_delimiter):
 
 def __read_file(filename: str):
     f = open(filename)
-    lines = f.read()
+    lines = f.read().rstrip("\n")
     f.close()
     return lines

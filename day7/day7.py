@@ -62,7 +62,7 @@ def find_parents_recursive(start: Bag, colors: set):
 
 
 # --- Part Two ---
-def part_two(lines):
+def count_individual_bags(lines):
     count = 0
     return count
 
@@ -70,7 +70,7 @@ def part_two(lines):
 def main():
     data = get_input_lines()
     print(count_containing_rules(data))
-    print(part_two(data))
+    print(count_individual_bags(data))
 
 
 if __name__ == '__main__':

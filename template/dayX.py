@@ -1,27 +1,22 @@
 # --- Day X: Template ---
-def prepare_string(line: str):
-    return line.strip("\n")
-
+from util.parser import get_input_lines
 
 # --- Part One ---
-def part_one(lines):
+def part_one(data):
     count = 0
     return count
 
 
 # --- Part Two ---
-def part_two(lines):
+def part_two(data):
     count = 0
     return count
 
 
 def main():
-    f = open('input.txt')
-    lines = f.readlines()
-    f.close()
-
-    print(part_one(lines))
-    print(part_two(lines))
+    data = get_input_lines()
+    print(part_one(data))
+    print(part_two(data))
 
 
 if __name__ == '__main__':

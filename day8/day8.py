@@ -10,31 +10,41 @@ class Program(object):
         self.accumulator = 0
         self.pointer = 0
         self.jump = 0
+        self.jumped = False
+
+        self.OPS = {
+            "acc": self.__acc,
+            "jmp": self.__jmp,
+            "nop": self.__nop
+        }
 
     def run(self) -> int:
         while self.pointer < len(self.instructions):
-            if not self.jump and self.pointer > 0:
-                break
             inst = self.instructions[self.pointer].split()
-            self.OPS.get(inst[0])(int(inst[1]))
+            op: str = inst[0]
+            arg: int = int(inst[1])
+            if op != "jmp":
+                self.__inc()
+            if self.jumped and not self.jump:
+                break
+            self.OPS.get(op)(arg)
         return self.accumulator
 
     def __acc(self, num: int):
-        self.pointer += 1
         self.accumulator += num
 
     def __jmp(self, num: int):
         self.pointer += num
         self.jump += num
+        self.jumped = True
 
     def __nop(self, num: int):
-        self.pointer += 1
+        return
 
-    OPS = {
-        "acc": __acc,
-        "jmp": __jmp,
-        "nop": __nop
-    }
+    def __inc(self):
+        if self.jumped:
+            self.jump += 1
+        self.pointer += 1
 
 
 # --- Part One ---

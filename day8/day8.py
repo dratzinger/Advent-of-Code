@@ -48,7 +48,7 @@ def check_loop_acc_state(data):
 
 
 # --- Part Two ---
-def part_two(data):
+def check_final_acc_state(data):
     count = 0
     return count
 
@@ -56,7 +56,7 @@ def part_two(data):
 def main():
     data = get_input_lines()
     print(check_loop_acc_state(data))
-    print(part_two(data))
+    print(check_final_acc_state(data))
 
 
 if __name__ == '__main__':

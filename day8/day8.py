@@ -7,10 +7,9 @@ from util.parser import get_input_lines
 class Program(object):
     def __init__(self, instructions: List[str]) -> None:
         self.instructions = instructions
+        self.executed = [False] * len(instructions)
         self.accumulator = 0
         self.pointer = 0
-        self.jump = 0
-        self.jumped = False
 
         self.OPS = {
             "acc": self.__acc,
@@ -23,28 +22,24 @@ class Program(object):
             inst = self.instructions[self.pointer].split()
             op: str = inst[0]
             arg: int = int(inst[1])
-            if op != "jmp":
-                self.__inc()
-            if self.jumped and not self.jump:
+            if self.executed[self.pointer]:
                 break
+            self.__execd(self.pointer)
             self.OPS.get(op)(arg)
         return self.accumulator
 
     def __acc(self, num: int):
         self.accumulator += num
+        self.pointer += 1
 
     def __jmp(self, num: int):
         self.pointer += num
-        self.jump += num
-        self.jumped = True
 
     def __nop(self, num: int):
-        return
-
-    def __inc(self):
-        if self.jumped:
-            self.jump += 1
         self.pointer += 1
+
+    def __execd(self, pointer: int):
+        self.executed[pointer] = True
 
 
 # --- Part One ---

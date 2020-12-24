@@ -17,7 +17,6 @@ def __input_blocks(lines, block_delimiter):
     return re.split(block_delimiter+'|\n',lines)
 
 def __read_file(filename: str):
-    f = open(filename)
-    lines = f.read().rstrip("\n")
-    f.close()
+    with open(filename) as f:
+        lines = f.read().rstrip("\n")
     return lines

@@ -8,7 +8,7 @@ class Test(unittest.TestCase):
         self.assertEqual(22 * 10, differences_multiplied(get_input_lines("test_input.txt")))
 
     def test_part_2_known_input(self):
-        self.assertEqual(0, part_two(get_input_lines("test_input.txt")))
+        self.assertEqual(19208, part_two(get_input_lines("test_input.txt")))
 
 
 if __name__ == '__main__':

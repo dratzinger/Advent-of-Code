@@ -1,5 +1,5 @@
 # --- Day 8: Handheld Halting ---
-from typing import List, Tuple
+from typing import List
 
 from util.parser import get_input_lines
 

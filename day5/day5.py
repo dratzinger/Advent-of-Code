@@ -1,8 +1,6 @@
 # --- Day 5: Binary Boarding ---
 import re
 
-from typing import List
-
 ROW_COUNT = 128
 ROW_UPPER = "B"
 COL_COUNT = 8
@@ -26,7 +24,7 @@ def calculate_column(col_string: str) -> int:
 
 def recursive_find(row_string, numbers, upper_char) -> int:
     direction = row_string.pop(0)
-    middle_index = len(numbers)//2
+    middle_index = len(numbers) // 2
     lower_half = numbers[:middle_index]
     upper_half = numbers[middle_index:]
     temp = upper_half if upper_char == direction else lower_half
@@ -58,8 +56,8 @@ def find_my_seat():
     while len(seats) > 0:
         prev = current
         current = seats.pop(0)
-        if prev+2 == current:
-            return prev+1
+        if prev + 2 == current:
+            return prev + 1
 
 
 def main():

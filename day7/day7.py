@@ -1,6 +1,7 @@
 # --- Day 7: Handy Haversacks ---
 import re
 from typing import Dict
+
 from util.parser import get_input_lines
 
 
@@ -51,7 +52,7 @@ def count_containing_rules(lines, contains_bag: str = "shiny gold"):
     start = bags.get(contains_bag)
     colors = set()
     find_parents_recursive(start, colors)
-    return len(colors)-1
+    return len(colors) - 1
 
 
 def find_parents_recursive(start: Bag, colors: set):

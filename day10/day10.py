@@ -25,34 +25,26 @@ def differences_multiplied(data):
 
 
 # --- Part Two ---
-def calculate_possible_arrangements(data: List[str]):
-    numbers = sorted([int(i) for i in data])
-    shift1 = shift_list(numbers)
-    shift2 = shift_list(shift1)
-    shift3 = shift_list(shift2)
-    possible = [evaluate_options(i, j, k, l) for i, j, k, l in zip (numbers, shift1, shift2, shift3)]
-    return prod(possible)
-
-def prod(iterable):
-    from functools import reduce
-    import operator
-    return reduce(operator.mul, iterable, 1)
-
-def shift_list(l: list) -> list:
-    from collections import deque
-    q = deque(l)
-    q.rotate(-1)
-    return list(q)
-
-def evaluate_options(i, j, k, l):
+def evaluate_possible(data: List[int]):
     count = 0
-    count += (j - i <= 3)
-    count += (k - i <= 3)
-    count += (l - i <= 3)
+    for end in branches(data, 0, len(data) - 1):
+        count += end
     return count
 
+def branches(data: List[int], pointer: int, target: int):
+    for offset in [1,2,3]:
+        if (pointer + offset) < target:
+            if adapter_suitable(data, pointer, offset):
+                branches(data, pointer + offset, target)
+        else:
+            yield 1
+
+def adapter_suitable(data: List[int], pointer: int, offset: int):
+        return data[pointer + offset] - data[pointer] <= 3
+
 def part_two(data):
-    return calculate_possible_arrangements(data)
+    numbers = sorted([int(i) for i in data])
+    return evaluate_possible(numbers)
 
 
 def main():

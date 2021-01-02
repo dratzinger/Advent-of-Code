@@ -35,7 +35,8 @@ def branches(data: List[int], pointer: int, target: int):
     for offset in [1,2,3]:
         if (pointer + offset) < target:
             if adapter_suitable(data, pointer, offset):
-                branches(data, pointer + offset, target)
+                for end in branches(data, pointer + offset, target):
+                    yield end
         else:
             yield 1
 
@@ -43,14 +44,21 @@ def adapter_suitable(data: List[int], pointer: int, offset: int):
         return data[pointer + offset] - data[pointer] <= 3
 
 def part_two(data):
+    return evaluate_possible(convert_list(data))
+
+
+def convert_list(data):
     numbers = sorted([int(i) for i in data])
-    return evaluate_possible(numbers)
+    numbers.insert(0,0) #outlet
+    numbers.append(numbers[-1] + 3) #device
+    return numbers
 
 
 def main():
     data = get_input_lines()
     print(differences_multiplied(data))
-    print(part_two(data))
+    numbers = convert_list(data)
+    print(part_two(numbers))
 
 
 if __name__ == '__main__':

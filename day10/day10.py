@@ -49,8 +49,7 @@ def part_two(data):
 
 def convert_list(data):
     numbers = sorted([int(i) for i in data])
-    numbers.insert(0,0) #outlet
-    numbers.append(numbers[-1] + 3) #device
+    numbers = [0, *numbers, numbers[-1] + 3] # add outlet and device ends
     return numbers
 
 

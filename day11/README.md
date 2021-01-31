@@ -19,10 +19,10 @@ L.LLLLLL.L
 L.LLLLL.LL
 ```
 
-Now, you just need to model the people who will be arriving shortly.  Fortunately, people are entirely predictable and always follow a simple  set of rules. All decisions are based on the *number of occupied seats* adjacent to a given seat (one of the eight positions immediately up,  down, left, right, or diagonal from the seat). The following rules are  applied to every seat simultaneously:
+Now, you just need to model the people who will be arriving shortly.  Fortunately, people are entirely predictable and always follow a simple  set of rules. All decisions are based on the **number of occupied seats** adjacent to a given seat (one of the eight positions immediately up,  down, left, right, or diagonal from the seat). The following rules are  applied to every seat simultaneously:
 
-- If a seat is *empty* (`L`) and there are *no* occupied seats adjacent to it, the seat becomes *occupied*.
-- If a seat is *occupied* (`#`) and *four or more* seats adjacent to it are also occupied, the seat becomes *empty*.
+- If a seat is **empty** (`L`) and there are **no** occupied seats adjacent to it, the seat becomes **occupied**.
+- If a seat is **occupied** (`#`) and **four or more** seats adjacent to it are also occupied, the seat becomes **empty**.
 - Otherwise, the seat's state does not change.
 
 Floor (`.`) never changes; seats don't move, and nobody sits on the floor.
@@ -70,6 +70,9 @@ L.#.#..#..
 #L######L#
 #.LL###L.L
 #.#L###.##
+```
+
+```
 #.#L.L#.##
 #LLL#LL.L#
 L.L.L..#..
@@ -80,6 +83,9 @@ L.L.L..#..
 #L#LLLL#L#
 #.LLLLLL.L
 #.#L#L#.##
+```
+
+```
 #.#L.L#.##
 #LLL#LL.L#
 L.#.L..#..
@@ -92,6 +98,6 @@ L.#.L..#..
 #.#L#L#.##
 ```
 
-At this point, something interesting happens: the chaos stabilizes  and further applications of these rules cause no seats to change state!  Once people stop moving around, you count *`37`* occupied seats.
+At this point, something interesting happens: the chaos stabilizes  and further applications of these rules cause no seats to change state!  Once people stop moving around, you count **`37`** occupied seats.
 
-Simulate your seating area by applying the seating rules repeatedly until no seats change state. *How many seats end up occupied?*
+Simulate your seating area by applying the seating rules repeatedly until no seats change state. **How many seats end up occupied?**

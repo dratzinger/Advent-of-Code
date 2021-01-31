@@ -5,17 +5,19 @@ from typing import Tuple
 
 from util.parser import get_input_lines
 
+
 class State:
     # seat states
     empty = 'L'
     occupied = '#'
     floor = '.'
 
+
 class Layout:
     def __init__(self, rows, cols):
         self.rows = rows
         self.cols = cols
-        self.data = [[State.floor] * cols] * rows
+        self.data = [[State.floor for _ in range(cols)] for _ in range(rows)]
 
     def __eq__(self, other) -> bool:
         return self.data == other.data
@@ -33,16 +35,24 @@ class Layout:
         return len([item for sublist in self.data for item in sublist if item == State.occupied])
 
     def apply_rules(self):
+        sit_threshold = 0
+        leave_threshold = 4
+
         for y in range(self.rows):
             for x in range(self.cols):
-                if self.seat_occupied(x, y):
-                    break
+                if self.seat_empty(x, y):
+                    if self.check_neighbours(x, y, State.empty, sit_threshold):
+                        # todo: fix this check
+                        self.set_position(x, y, State.occupied)
+                elif self.seat_occupied(x, y):
+                    if self.check_neighbours(x, y, State.occupied, leave_threshold):
+                        self.set_position(x, y, State.empty)
         return self
 
-    def check_neighbours(self, x: int, y:int, state: State, threshold: int):
+    def check_neighbours(self, x: int, y: int, state: str, threshold: int):
         for ny in [y-1, y, y+1]:
             for nx in [x-1, x, x+1]:
-                if (threshold >= 0) and (nx >= 0 and ny >= 0) and (nx != x and ny != y):
+                if (threshold >= 0) and (0 <= nx < self.cols and 0 <= ny < self.rows) and (nx != x and ny != y):
                     threshold = threshold - (self.data[ny][nx] == state)
         return threshold > 0
 

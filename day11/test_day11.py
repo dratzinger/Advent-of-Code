@@ -13,7 +13,8 @@ class Test(unittest.TestCase):
     #     self.assertEqual(37, part_one(input_seats))
 
     def test_part_1_round1(self):
-        simulation = seating_round(build_seat_plan(input_seats))
+        plan = build_seat_plan(input_seats)
+        simulation = seating_round(plan)
         target_1 = build_seat_plan(out_round_1)
         self.assertTrue(simulation == target_1)
 

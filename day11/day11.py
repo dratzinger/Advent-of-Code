@@ -41,7 +41,7 @@ class Layout:
         for y in range(self.rows):
             for x in range(self.cols):
                 if self.seat_empty(x, y):
-                    if self.check_neighbours(x, y, State.empty, sit_threshold):
+                    if self.check_neighbours(x, y, State.occupied, sit_threshold):
                         # todo: fix this check
                         self.set_position(x, y, State.occupied)
                 elif self.seat_occupied(x, y):
@@ -54,7 +54,7 @@ class Layout:
             for nx in [x-1, x, x+1]:
                 if (threshold >= 0) and (0 <= nx < self.cols and 0 <= ny < self.rows) and (nx != x and ny != y):
                     threshold = threshold - (self.data[ny][nx] == state)
-        return threshold > 0
+        return threshold >= 0
 
 # --- Part One ---
 def part_one(data):

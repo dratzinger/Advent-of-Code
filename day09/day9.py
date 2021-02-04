@@ -33,15 +33,34 @@ def valid(preamble: {}, target: int):
 
 
 # --- Part Two ---
-def part_two(data):
-    count = 0
-    return count
+def part_two(data, target: int):
+    numbers = [int(num) for num in data if int(num) != target]
+    contiguous = find_contiguous(numbers, target)
+    return min(contiguous) + max(contiguous)
+
+
+def find_contiguous(data, target: int):
+    while len(data) > 1:
+        for (index, total) in sum_sequentially(data):
+            if total == target:
+                return data[:index+1]
+            elif total > target:
+                data = data[1:]
+                break
+
+
+def sum_sequentially(data):
+    total = 0
+    for i in range(0, len(data)):
+        total += data[i]
+        yield i, total
 
 
 def main():
     data = get_input_lines()
-    print(part_one(data, 25))
-    print(part_two(data))
+    solution_one = part_one(data, 25)
+    print(solution_one)
+    print(part_two(data, solution_one))
 
 
 if __name__ == '__main__':

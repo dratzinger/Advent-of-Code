@@ -8,7 +8,8 @@ class Test(unittest.TestCase):
         self.assertEqual(127, part_one(get_input_lines("test_input.txt"), 5))
 
     def test_part_2_known_input(self):
-        self.assertEqual(0, part_two(get_input_lines("test_input.txt")))
+        step_1 = part_one(get_input_lines("test_input.txt"), 5)
+        self.assertEqual(62, part_two(get_input_lines("test_input.txt"), step_1))
 
 
 if __name__ == '__main__':

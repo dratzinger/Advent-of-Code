@@ -20,10 +20,13 @@ class Ship(object):
 
 
 class State(object):
-    def __init__(self) -> None:
-        self.ship = Ship()
+    def __init__(self, ship: Ship = Ship()) -> None:
+        self.ship = ship
         self.north = 0
         self.east = 0
+
+    def move_forward(self, nav: 'Navigation', value: int):
+        nav.execute(self.ship.direction(), value)
 
     def move_north(self, value: int):
         self.north += value
@@ -31,31 +34,41 @@ class State(object):
     def move_east(self, value: int):
         self.east += value
 
+    def rotate_right(self, value: int):
+        self.ship.turn(value)
+
+    def rotate_left(self, value: int):
+        self.ship.turn(-value)
+
+
+class Navigation(object):
+    def __init__(self, state: State = State()) -> None:
+        self.state = state
+
     def execute(self, action: str, value: int):
         if action == 'F':
-            action = self.ship.direction()
-
-        if action == 'N':
-            self.north += value
+            self.state.move_forward(self, value)
+        elif action == 'N':
+            self.state.move_north(value)
         elif action == 'S':
-            self.north -= value
+            self.state.move_north(-value)
         elif action == 'E':
-            self.east += value
+            self.state.move_east(value)
         elif action == 'W':
-            self.east -= value
+            self.state.move_east(-value)
         elif action == 'R':
-            self.ship.turn(value)
+            self.state.rotate_right(value)
         elif action == 'L':
-            self.ship.turn(-value)
+            self.state.rotate_left(value)
         else:
             raise RuntimeWarning("unknown instruction: "+action+str(value))
 
     def calculate_distance(self):
-        return abs(self.north) + abs(self.east)
+        return abs(self.state.north) + abs(self.state.east)
 
 
 def part_one(data):
-    navigation = State()
+    navigation = Navigation()
     for instruction in data:
         navigation.execute(instruction[:1], int(instruction[1:]))
     return navigation.calculate_distance()

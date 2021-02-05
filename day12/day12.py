@@ -1,5 +1,5 @@
 # --- Day 12: Rain Risk ---
-from collections import namedtuple
+from collections import deque
 from util.parser import get_input_lines
 
 
@@ -61,7 +61,7 @@ class Navigation(object):
         elif action == 'L':
             self.state.rotate_left(value)
         else:
-            raise RuntimeWarning("unknown instruction: "+action+str(value))
+            raise RuntimeWarning("unknown instruction: " + action + str(value))
 
     def calculate_distance(self):
         return abs(self.state.north) + abs(self.state.east)
@@ -75,9 +75,37 @@ def part_one(data):
 
 
 # --- Part Two ---
+class Waypoint(State):
+    def __init__(self, ship: Ship = Ship()) -> None:
+        super().__init__(ship)
+        self.wp = deque([1, 10, 0, 0])  # [N, E, S, W]
+
+    def move_forward(self, nav: Navigation, value: int):
+        self.north += (self.wp[0] - self.wp[2]) * value
+        self.east += (self.wp[1] - self.wp[3]) * value
+
+    def move_north(self, value: int):
+        self.wp[0] += value
+
+    def move_east(self, value: int):
+        self.wp[1] += value
+
+    def rotate_right(self, value: int):
+        self.wp.rotate(Waypoint._rotations(value))
+
+    def rotate_left(self, value: int):
+        self.wp.rotate(-Waypoint._rotations(value))
+
+    @staticmethod
+    def _rotations(angle: int):
+        return round((angle % 360) / 90)
+
+
 def part_two(data):
-    count = 0
-    return count
+    navigation = Navigation(Waypoint())
+    for instruction in data:
+        navigation.execute(instruction[:1], int(instruction[1:]))
+    return navigation.calculate_distance()
 
 
 def main():

@@ -38,12 +38,13 @@ def part_two(data):
     first, _ = buses.pop(0)
     # checks = sorted((bus for bus in ranges), reverse=True)
     # checks.append(first)
-    previous = (x*first for x in infinite_int())
-    current = None
-    for freq, diff in ranges:
-        current = (x for x in previous if x % freq == diff)
-        previous = current
-    return next(current)
+    fltr = (x*first for x in infinite_int())
+    for freq, diff in buses:
+        fltr = (x for x in fltr if x % freq == 0 and x % first == diff)
+        if freq == 59:
+            for _ in range(1000):
+                print(next(fltr))
+    return next(fltr)
 
 
 def infinite_int():

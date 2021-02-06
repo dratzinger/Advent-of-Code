@@ -30,25 +30,23 @@ def part_one(data):
 def part_two(data):
     schedule = (data[1].split(","))
     buses = [(int(bus), offset) for offset, bus in enumerate(schedule) if bus != 'x']
-    ranges = [
-        (bus, buses[i+1][1]-offset) if (i+1 < len(buses)) else (bus, 1)
-        for i, (bus, offset) in enumerate(buses)
-    ]
-    # ranges.reverse()
-    first, _ = buses.pop(0)
-    # checks = sorted((bus for bus in ranges), reverse=True)
-    # checks.append(first)
-    fltr = (x*first for x in infinite_int())
+    base, _ = buses.pop(0)
+    buses.sort(reverse=True)
+    fltr = None
     for freq, diff in buses:
-        fltr = (x for x in fltr if x % freq == 0 and x % first == diff)
-        if freq == 59:
-            for _ in range(1000):
+        if not fltr:
+            fltr = (x*freq-diff for x in infinite_int())
+        else:
+            fltr = (x for x in fltr if x+diff % freq == 0)
+        if freq == 31:
+            for i in range(1000):
+                print(i)
                 print(next(fltr))
     return next(fltr)
 
 
 def infinite_int():
-    i = 0
+    i = 1
     while True:
         yield i
         i += 1

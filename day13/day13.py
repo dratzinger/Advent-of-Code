@@ -28,8 +28,29 @@ def part_one(data):
 
 # --- Part Two ---
 def part_two(data):
-    count = 0
-    return count
+    schedule = (data[1].split(","))
+    buses = [(int(bus), offset) for offset, bus in enumerate(schedule) if bus != 'x']
+    ranges = [
+        (bus, buses[i+1][1]-offset) if (i+1 < len(buses)) else (bus, 1)
+        for i, (bus, offset) in enumerate(buses)
+    ]
+    # ranges.reverse()
+    first, _ = buses.pop(0)
+    # checks = sorted((bus for bus in ranges), reverse=True)
+    # checks.append(first)
+    previous = (x*first for x in infinite_int())
+    current = None
+    for freq, diff in ranges:
+        current = (x for x in previous if x % freq == diff)
+        previous = current
+    return next(current)
+
+
+def infinite_int():
+    i = 0
+    while True:
+        yield i
+        i += 1
 
 
 def main():

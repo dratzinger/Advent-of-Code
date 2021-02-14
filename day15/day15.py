@@ -12,23 +12,20 @@ class Game(object):
         self.starting = [int(x) for x in data]  # starting numbers
         self.last = None  # last number spoken
 
-    def _memorize(self, num: int, val: int):
-        self.memory[num] = val
-
     def play_turn(self):
         self.turn += 1
         if self.starting:
             number = self.starting.pop(0)
-            self._memorize(number, self.turn)
+            self.memory[number] = self.turn
         else:
             number = self.last
             previous_turn = self.turn - 1
             if number in self.memory:
                 recalled_turn = self.memory[number]
-                self._memorize(number, previous_turn)
+                self.memory[number] = previous_turn
                 number = previous_turn - recalled_turn
             else:
-                self._memorize(number, previous_turn)
+                self.memory[number] = previous_turn
                 number = 0
         self.last = number
         return number

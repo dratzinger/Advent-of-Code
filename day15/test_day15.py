@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
         self.assertEqual(1836, part_one([3, 1, 2]))
 
     def test_part_2_known_input(self):
-        self.assertEqual(0, part_two([0, 3, 6]))
+        self.assertEqual(175594, part_two([0, 3, 6]))
 
 
 if __name__ == '__main__':

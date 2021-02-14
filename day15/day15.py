@@ -12,39 +12,42 @@ class Game(object):
         self.starting = [int(x) for x in data]  # starting numbers
         self.last = None  # last number spoken
 
-    def memorize(self, num: int, val: int):
+    def _memorize(self, num: int, val: int):
         self.memory[num] = val
 
     def play_turn(self):
         self.turn += 1
         if self.starting:
             number = self.starting.pop(0)
-            self.memorize(number, self.turn)
+            self._memorize(number, self.turn)
         else:
             number = self.last
             previous_turn = self.turn - 1
             if number in self.memory:
                 recalled_turn = self.memory[number]
-                self.memorize(number, previous_turn)
+                self._memorize(number, previous_turn)
                 number = previous_turn - recalled_turn
             else:
-                self.memorize(number, previous_turn)
+                self._memorize(number, previous_turn)
                 number = 0
         self.last = number
         return number
 
+    def play_until(self, turn: int):
+        while self.turn < turn-1:
+            self.play_turn()
+        return self.play_turn()
+
 
 def part_one(data: Iterable) -> int:
     game = Game(data)
-    while game.turn < 2019:
-        game.play_turn()
-    return game.play_turn()
+    return game.play_until(2020)
 
 
 # --- Part Two ---
-def part_two(data: Iterable):
-    count = 0
-    return count
+def part_two(data: Iterable) -> int:
+    game = Game(data)
+    return game.play_until(30000000)
 
 
 def main():

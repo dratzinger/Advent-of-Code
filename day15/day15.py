@@ -1,5 +1,5 @@
 # --- Day 15: Rambunctious Recitation ---
-from collections import Iterable
+from typing import Iterable
 
 from util.parser import get_input_lines
 
@@ -18,19 +18,20 @@ class Game(object):
     def play_turn(self):
         self.turn += 1
         if self.starting:
-            num = self.starting.pop(0)
-            self.memorize(num, self.turn)
+            number = self.starting.pop(0)
+            self.memorize(number, self.turn)
         else:
-            num = self.last
-            if num in self.memory:
-                mem = self.memory[num]
-                self.memorize(num, self.turn-1)
-                num = self.turn-1 - mem
+            number = self.last
+            previous_turn = self.turn - 1
+            if number in self.memory:
+                recalled_turn = self.memory[number]
+                self.memorize(number, previous_turn)
+                number = previous_turn - recalled_turn
             else:
-                self.memorize(num, self.turn-1)
-                num = 0
-        self.last = num
-        return num
+                self.memorize(number, previous_turn)
+                number = 0
+        self.last = number
+        return number
 
 
 def part_one(data: Iterable) -> int:

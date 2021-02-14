@@ -11,13 +11,13 @@ ugly hacked together solutions for [AoC 2020](https://adventofcode.com/2020/)
 | Day 6   | :star: :star: |
 | Day 7   | :star:        |
 | Day 8   |               |
-| Day 9   | :star::star:  |
+| Day 9   | :star: :star: |
 | Day 10  | :star:        |
 | Day 11  |               |
-| Day 12  | :star::star:  |
+| Day 12  | :star: :star: |
 | Day 13  | :star:        |
 | Day 14  |               |
-| Day 15  | :star:        |
+| Day 15  | :star: :star: |
 | Day 16  |               |
 | Day 17  |               |
 | Day 18  |               |

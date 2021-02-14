@@ -17,7 +17,7 @@ ugly hacked together solutions for [AoC 2020](https://adventofcode.com/2020/)
 | Day 12  | :star::star:  |
 | Day 13  | :star:        |
 | Day 14  |               |
-| Day 15  |               |
+| Day 15  | :star:        |
 | Day 16  |               |
 | Day 17  |               |
 | Day 18  |               |

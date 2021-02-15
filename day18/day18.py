@@ -5,7 +5,20 @@ from pyparsing import nestedExpr, Word, oneOf, nums, ZeroOrMore
 
 from util.parser import get_input_lines
 
+
+def parse_nested(expression: str):
+    operators = oneOf("+ *")
+    nested_braces = nestedExpr('(', ')', )
+    combined = ZeroOrMore(Word(nums) | operators | nested_braces)
+    return combined.parseString(expression).asList()
+
+
 # --- Part One ---
+def part_one(data: Iterable) -> int:
+    expressions = (calculate(exp) for exp in data)
+    return sum(expressions)
+
+
 ops = {
     '+': lambda x, y: x + y,
     '*': lambda x, y: x * y,
@@ -27,18 +40,6 @@ def calculate(expression: str):
         return result
 
     return evaluate_expression(parsed)
-
-
-def parse_nested(expression: str):
-    operators = oneOf("+ *")
-    nested_braces = nestedExpr('(', ')', )
-    combined = ZeroOrMore(Word(nums) | operators | nested_braces)
-    return combined.parseString(expression).asList()
-
-
-def part_one(data: Iterable) -> int:
-    expressions = (calculate(exp) for exp in data)
-    return sum(expressions)
 
 
 # --- Part Two ---

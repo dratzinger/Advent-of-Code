@@ -44,7 +44,31 @@ def evaluate_expression(exp: list):
 
 # --- Part Two ---
 def part_two(data: Iterable) -> int:
-    return 0
+    expressions = (calculate_prioritized(exp) for exp in data)
+    return sum(expressions)
+
+
+def calculate_prioritized(expression: str) -> int:
+    parsed = parse_nested(expression)
+    prioritized = prioritize(parsed)
+    return evaluate_expression(prioritized)
+
+
+def prioritize(expression: list) -> list:
+    expression = [x if not isinstance(x, list) else prioritize(x) for x in expression]
+    prioritized = [expression.pop(0)]
+
+    while expression:
+        if len(expression) >= 2:
+            op = expression.pop(0)
+            if op == '+':
+                prioritized.append([prioritized.pop(), op, expression.pop(0)])
+            else:
+                prioritized.extend([op, expression.pop(0)])
+        else:
+            prioritized.append(expression.pop(0))
+
+    return prioritized
 
 
 def main():

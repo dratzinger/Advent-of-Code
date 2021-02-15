@@ -20,7 +20,7 @@ ugly hacked together solutions for [AoC 2020](https://adventofcode.com/2020/)
 | Day 15  | :star: :star: |
 | Day 16  |               |
 | Day 17  |               |
-| Day 18  | :star:        |
+| Day 18  | :star: :star: |
 | Day 19  |               |
 | Day 20  |               |
 | Day 21  |               |

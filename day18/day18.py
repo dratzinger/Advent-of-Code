@@ -17,17 +17,16 @@ def calculate(expression: str):
 
     def evaluate_expression(exp: list):
         left = exp.pop(0)
-        result = int(left) if left is not list else evaluate_expression(left)
+        result = int(left) if not isinstance(left, list) else evaluate_expression(left)
 
         while exp:
             op = ops.get(exp.pop(0))
             right = exp.pop(0)
-            right = int(right) if right is not list else evaluate_expression(right)
-            left = op(left, right)
+            right = int(right) if not isinstance(right, list) else evaluate_expression(right)
+            result = op(result, right)
         return result
 
     return evaluate_expression(parsed)
-
 
 
 def parse_nested(expression: str):

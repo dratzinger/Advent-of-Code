@@ -6,7 +6,7 @@ from pyparsing import nestedExpr, Word, oneOf, nums, ZeroOrMore
 from util.parser import get_input_lines
 
 
-def parse_nested(expression: str):
+def parse_nested(expression: str) -> list:
     operators = oneOf("+ *")
     nested_braces = nestedExpr('(', ')', )
     combined = ZeroOrMore(Word(nums) | operators | nested_braces)
@@ -25,21 +25,21 @@ ops = {
 }
 
 
-def calculate(expression: str):
+def calculate(expression: str) -> int:
     parsed = parse_nested(expression)
-
-    def evaluate_expression(exp: list):
-        left = exp.pop(0)
-        result = int(left) if not isinstance(left, list) else evaluate_expression(left)
-
-        while exp:
-            op = ops.get(exp.pop(0))
-            right = exp.pop(0)
-            right = int(right) if not isinstance(right, list) else evaluate_expression(right)
-            result = op(result, right)
-        return result
-
     return evaluate_expression(parsed)
+
+
+def evaluate_expression(exp: list):
+    left = exp.pop(0)
+    result = int(left) if not isinstance(left, list) else evaluate_expression(left)
+
+    while exp:
+        op = ops.get(exp.pop(0))
+        right = exp.pop(0)
+        right = int(right) if not isinstance(right, list) else evaluate_expression(right)
+        result = op(result, right)
+    return result
 
 
 # --- Part Two ---

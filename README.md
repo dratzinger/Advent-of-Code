@@ -24,7 +24,7 @@ ugly hacked together solutions for [AoC 2020](https://adventofcode.com/2020/)
 | Day 19  |               |
 | Day 20  |               |
 | Day 21  |               |
-| Day 22  |               |
+| Day 22  | :star:        |
 | Day 23  |               |
 | Day 24  |               |
 | Day 25  |               |

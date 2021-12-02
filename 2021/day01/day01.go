@@ -51,6 +51,11 @@ func Part1(input []int) (count int) {
 	return count
 }
 
-func Part2(input []int) (count int) {
-	return count
+func Part2(input []int) int {
+	windows := []int{}
+	for i := 0; i+2 < len(input); i++ {
+		sum := input[i] + input[i+1] + input[i+2]
+		windows = append(windows, sum)
+	}
+	return Part1(windows)
 }

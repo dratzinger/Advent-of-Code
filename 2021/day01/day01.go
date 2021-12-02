@@ -9,6 +9,7 @@ import (
 func main() {
 	in := parseInput("input.txt")
 	fmt.Println("Day 1 - Pt. 1:", Part1(in))
+	fmt.Println("Day 1 - Pt. 2:", Part2(in))
 }
 
 func parseInput(filename string) []int {
@@ -47,5 +48,9 @@ func Part1(input []int) (count int) {
 		}
 		prev = val
 	}
+	return count
+}
+
+func Part2(input []int) (count int) {
 	return count
 }

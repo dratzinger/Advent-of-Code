@@ -1,35 +1,39 @@
 package parse
 
 import (
-	"fmt"
-	"io"
+	"bufio"
+	"log"
 	"os"
+	"strconv"
 )
 
-func IntLines(filename string) []int {
+func StrLines(filename string) (parsed []string) {
 	file, err := os.Open(filename)
-
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		parsed = append(parsed, scanner.Text())
 	}
 
-	var line int
-	var nums []int
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	return parsed
+}
 
-	for {
-		// give a pattern to scan
-		_, err := fmt.Fscanf(file, "%d\n", &line)
+func IntLines(filename string) (ints []int) {
+	for _, line := range StrLines(filename) {
+		val, err := strconv.Atoi(line)
 
 		if err != nil {
-			if err == io.EOF {
-				// stop reading the file
-				break
-			}
-			fmt.Println(err)
-			os.Exit(1)
+			log.Fatal(err)
 		}
-		nums = append(nums, line)
+		ints = append(ints, val)
 	}
-	return nums
+	return ints
 }

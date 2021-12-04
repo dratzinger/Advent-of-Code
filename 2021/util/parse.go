@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func Read(filename string) string {
@@ -26,12 +27,18 @@ func IntLines(filename string) (ints []int) {
 
 func IntSlice(input []string) (ints []int) {
 	for _, line := range input {
-		val, err := strconv.Atoi(line)
-
-		if err != nil {
-			log.Fatal(err)
+		if line != "" {
+			ints = append(ints, ToInt(line))
 		}
-		ints = append(ints, val)
 	}
 	return ints
+}
+
+func ToInt(str string) int {
+	val, err := strconv.Atoi(str)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return val
 }

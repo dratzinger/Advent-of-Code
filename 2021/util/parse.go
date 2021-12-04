@@ -42,3 +42,18 @@ func ToInt(str string) int {
 	}
 	return val
 }
+
+func IntBlocks(input []string, colSep string, blockSep string) (blocks [][][]int) {
+	block := [][]int{}
+	for i, line := range input {
+		if line == blockSep || i == len(input)-1 {
+			blocks = append(blocks, block)
+			block = [][]int{}
+		} else {
+			row := strings.Split(line, colSep)
+			conv := IntSlice(row)
+			block = append(block, conv)
+		}
+	}
+	return blocks
+}

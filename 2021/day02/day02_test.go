@@ -18,3 +18,11 @@ func TestPart1(t *testing.T) {
 		t.Errorf("Result was incorrect, got: %d, want: %d.", result, reference)
 	}
 }
+
+func TestPart2(t *testing.T) {
+	result := Part2(input)
+	reference := 900
+	if result != reference {
+		t.Errorf("Result was incorrect, got: %d, want: %d.", result, reference)
+	}
+}

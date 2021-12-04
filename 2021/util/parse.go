@@ -27,7 +27,11 @@ func StrLines(filename string) (parsed []string) {
 }
 
 func IntLines(filename string) (ints []int) {
-	for _, line := range StrLines(filename) {
+	return IntSlice(StrLines(filename))
+}
+
+func IntSlice(input []string) (ints []int) {
+	for _, line := range input {
 		val, err := strconv.Atoi(line)
 
 		if err != nil {

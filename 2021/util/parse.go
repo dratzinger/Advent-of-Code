@@ -1,33 +1,27 @@
 package parse
 
 import (
-	"bufio"
 	"log"
 	"os"
 	"strconv"
 )
 
-func StrLines(filename string) (parsed []string) {
-	file, err := os.Open(filename)
+func Read(filename string) string {
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	return string(data)
+}
 
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		parsed = append(parsed, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-	return parsed
+func StrLines(filename string) []string {
+	content := Read(filename)
+	return strings.Split(content, "\n")
 }
 
 func IntLines(filename string) (ints []int) {
-	return IntSlice(StrLines(filename))
+	lines := StrLines(filename)
+	return IntSlice(lines)
 }
 
 func IntSlice(input []string) (ints []int) {

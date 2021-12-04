@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"bytes"
 	"log"
 	"os"
 	"strconv"
@@ -12,7 +13,8 @@ func Read(filename string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(data)
+	norm := normalizeNewlines(data)
+	return string(norm)
 }
 
 func StrLines(filename string) []string {
@@ -43,6 +45,10 @@ func ToInt(str string) int {
 	return val
 }
 
+func Blocks(content string, delim string) []string {
+	return strings.Split(content, delim)
+}
+
 func IntBlocks(input []string, colSep string, blockSep string) (blocks [][][]int) {
 	block := [][]int{}
 	for i, line := range input {
@@ -56,4 +62,15 @@ func IntBlocks(input []string, colSep string, blockSep string) (blocks [][][]int
 		}
 	}
 	return blocks
+}
+
+// From Essential Go:
+// NormalizeNewlines normalizes \r\n (windows) and \r (mac)
+// into \n (unix)
+func normalizeNewlines(d []byte) []byte {
+	// replace CR LF \r\n (windows) with LF \n (unix)
+	d = bytes.Replace(d, []byte{13, 10}, []byte{10}, -1)
+	// replace CF \r (mac) with LF \n (unix)
+	d = bytes.Replace(d, []byte{13}, []byte{10}, -1)
+	return d
 }

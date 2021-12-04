@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"gonum.org/v1/gonum/mat"
 )
 
 func Read(filename string) string {
@@ -45,8 +47,34 @@ func ToInt(str string) int {
 	return val
 }
 
+func FloatSlice(input []string) (nums []float64) {
+	for _, line := range input {
+		if line != "" {
+			nums = append(nums, ToFloat(line))
+		}
+	}
+	return nums
+}
+
+func ToFloat(str string) float64 {
+	val, err := strconv.ParseFloat(str, 64)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return val
+}
+
 func Blocks(content string, delim string) []string {
 	return strings.Split(content, delim)
+}
+
+func Matrix(content string, rows, cols int) mat.Matrix {
+	sep := " "
+	stripped := strings.Replace(content, "\n", sep, -1)
+	data := strings.Split(stripped, sep)
+	values := FloatSlice(data)
+	return mat.NewDense(rows, cols, values)
 }
 
 func IntBlocks(input []string, colSep string, blockSep string) (blocks [][][]int) {

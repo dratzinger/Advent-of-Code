@@ -26,3 +26,10 @@ func Min(vals ...int) int {
 	}
 	return min
 }
+
+func Sum(vals ...int) (sum int) {
+	for _, val := range vals {
+		sum += val
+	}
+	return sum
+}

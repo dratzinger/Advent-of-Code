@@ -4,55 +4,100 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/dratzinger/Advent-of-Code/2021/util/integers"
 	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
-	"gonum.org/v1/gonum/mat"
 )
 
 func main() {
 	content := parse.Read("input.txt")
 	in := parse.Blocks(content, "\n\n")
-	fmt.Println("Day 2 - Pt. 1:", Part1(in))
-	fmt.Println("Day 2 - Pt. 2:", Part2(in))
+	fmt.Println("Day 4 - Pt. 1:", Part1(in))
+	fmt.Println("Day 4 - Pt. 2:", Part2(in))
 }
 
-func Part1(input []string) (score int) {
+type board struct {
+	data           [][]int
+	rowMin, colMin int // -5 in any row or column wins
+	marked         int // how many fields are marked
+}
+
+func Part1(input []string) int {
 	nums := strings.Split(input[0], ",")
 	draws := parse.IntSlice(nums)
 	boards := makeBoards(input[1:])
-	checked := makeChecked(len(boards))
 
 	for _, call := range draws {
-		winner := playBingo(call, &boards, &checked)
+		winner := playBingo(call, boards)
 		if winner != -1 {
-			score = mat.Mul(boards[winner], checked[winner])
+			return call * score(&boards[winner])
 		}
 	}
-	return
+	return -1
 }
 
 func Part2(input []string) (count int) {
 	return
 }
 
-func makeBoards(data []string) (boards []mat.Matrix) {
-	for _, board := range data {
-		boards = append(boards, parse.Matrix(board, 5, 5))
+func makeBoards(data []string) (boards []board) {
+	for _, val := range data {
+		nums := parse.IntBlock(val, " ", "\n")
+		board := board{data: nums}
+		boards = append(boards, board)
 	}
 	return boards
 }
 
-func makeChecked(count int) (checked []mat.Matrix) {
-	for i := 0; i < count; i++ {
-		var zeros [25]float64
-		checked = append(checked, mat.NewDense(5, 5, zeros[:]))
+func playBingo(call int, boards []board) int {
+	for i, b := range boards {
+		markCalled(call, &b)
+		won := b.colMin < -4 || b.rowMin < -4
+		if won {
+			return i
+		}
 	}
-	return checked
+	return -1
 }
 
-func playBingo(call int, boards, checked *[]mat.Matrix) int {
-	return 0
+// mark call with -1 and recalculate stats
+func markCalled(called int, board *board) {
+	for y, row := range board.data {
+		for x, val := range row {
+			if val == called {
+				board.data[y][x] = -1
+				board.marked++
+				updateMins(board, y, x)
+			}
+		}
+	}
 }
 
-func sum(unchecked mat.Matrix) int {
-	return 0
+func updateMins(board *board, row, col int) {
+	board.colMin = integers.Min(sumCol(board.data, col), board.colMin)
+	board.rowMin = integers.Min(sumRow(board.data, row), board.rowMin)
+}
+
+func sumRow(data [][]int, row int) (sum int) {
+	for _, val := range data[row] {
+		sum += val
+	}
+	return sum
+}
+
+func sumCol(data [][]int, col int) (sum int) {
+	for _, row := range data {
+		sum += row[col]
+	}
+	return sum
+}
+
+func score(board *board) (sum int) {
+	for _, row := range *&board.data {
+		for _, val := range row {
+			if val > -1 {
+				sum += val
+			}
+		}
+	}
+	return sum
 }

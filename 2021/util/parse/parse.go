@@ -77,19 +77,17 @@ func Matrix(content string, rows, cols int) mat.Matrix {
 	return mat.NewDense(rows, cols, values)
 }
 
-func IntBlocks(input []string, colSep string, blockSep string) (blocks [][][]int) {
-	block := [][]int{}
-	for i, line := range input {
-		if line == blockSep || i == len(input)-1 {
-			blocks = append(blocks, block)
-			block = [][]int{}
-		} else {
-			row := strings.Split(line, colSep)
-			conv := IntSlice(row)
-			block = append(block, conv)
+func IntBlock(input, colSep, rowSep string) (block [][]int) {
+	if input != "" {
+		for _, line := range strings.Split(input, rowSep) {
+			if line != "" {
+				row := strings.Split(line, colSep)
+				conv := IntSlice(row)
+				block = append(block, conv)
+			}
 		}
 	}
-	return blocks
+	return block
 }
 
 // From Essential Go:

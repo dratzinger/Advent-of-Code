@@ -18,7 +18,6 @@ func main() {
 type board struct {
 	data           [][]int
 	rowMin, colMin int // -5 in any row or column wins
-	marked         int // how many fields are marked
 }
 
 func Part1(input []string) int {
@@ -27,16 +26,31 @@ func Part1(input []string) int {
 	boards := makeBoards(input[1:])
 
 	for _, call := range draws {
-		winner := playBingo(call, boards)
-		if winner != -1 {
-			return call * score(&boards[winner])
+		winners := playBingo(call, boards)
+		if len(winners) > 0 {
+			return call * score(&boards[winners[0]])
 		}
 	}
 	return -1
 }
 
 func Part2(input []string) (count int) {
-	return
+	nums := strings.Split(input[0], ",")
+	draws := parse.IntSlice(nums)
+	boards := makeBoards(input[1:])
+
+	for _, call := range draws {
+		winners := playBingo(call, boards)
+		if len(winners) > 0 {
+			if len(boards) == 1 {
+				return call * score(&boards[0])
+			}
+			for i, winner := range winners {
+				boards = removeBoard(boards, winner-i)
+			}
+		}
+	}
+	return -1
 }
 
 func makeBoards(data []string) (boards []board) {
@@ -48,15 +62,15 @@ func makeBoards(data []string) (boards []board) {
 	return boards
 }
 
-func playBingo(call int, boards []board) int {
+func playBingo(call int, boards []board) (winners []int) {
 	for i, b := range boards {
 		markCalled(call, &b)
 		won := b.colMin < -4 || b.rowMin < -4
 		if won {
-			return i
+			winners = append(winners, i)
 		}
 	}
-	return -1
+	return winners
 }
 
 // mark call with -1 and recalculate stats
@@ -65,7 +79,6 @@ func markCalled(called int, board *board) {
 		for x, val := range row {
 			if val == called {
 				board.data[y][x] = -1
-				board.marked++
 				updateMins(board, y, x)
 			}
 		}
@@ -92,7 +105,7 @@ func sumCol(data [][]int, col int) (sum int) {
 }
 
 func score(board *board) (sum int) {
-	for _, row := range *&board.data {
+	for _, row := range board.data {
 		for _, val := range row {
 			if val > -1 {
 				sum += val
@@ -100,4 +113,9 @@ func score(board *board) (sum int) {
 		}
 	}
 	return sum
+}
+
+func removeBoard(boards []board, i int) []board {
+	boards[i] = boards[len(boards)-1]
+	return boards[:len(boards)-1]
 }

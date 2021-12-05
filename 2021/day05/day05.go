@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	parse "github.com/dratzinger/Advent-of-Code/2021/util"
+	"github.com/dratzinger/Advent-of-Code/2021/util/integers"
+	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 )
 
 func main() {
@@ -54,8 +55,8 @@ func makeLines(input []string) (lines []line, maxX, maxY int) {
 				start: point{coords[0], coords[1]},
 				end:   point{coords[2], coords[3]},
 			}
-			maxX = max(line.start.x, line.end.x, maxX)
-			maxY = max(line.start.y, line.end.y, maxY)
+			maxX = integers.Max(line.start.x, line.end.x, maxX)
+			maxY = integers.Max(line.start.y, line.end.y, maxY)
 			lines = append(lines, line)
 		}
 	}
@@ -78,8 +79,8 @@ func drawLine(chart [][]int, line line) [][]int {
 
 	// bresenham comin' straight from the wikipedia
 	bresenham := func(x0, y0, x1, y1 int) {
-		dx := Abs(x1 - x0)
-		dy := -Abs(y1 - y0)
+		dx := integers.Abs(x1 - x0)
+		dy := -integers.Abs(y1 - y0)
 
 		var sx int
 		if x0 < x1 {
@@ -119,23 +120,6 @@ func drawLine(chart [][]int, line line) [][]int {
 
 	bresenham(line.start.x, line.start.y, line.end.x, line.end.y)
 	return chart
-}
-
-func Abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
-func max(vals ...int) int {
-	max := vals[0]
-	for _, v := range vals {
-		if v > max {
-			max = v
-		}
-	}
-	return max
 }
 
 func count(chart *[][]int, threshold int) (count int) {

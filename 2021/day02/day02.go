@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	parse "github.com/dratzinger/Advent-of-Code/2021/util"
+	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 )
 
 func main() {

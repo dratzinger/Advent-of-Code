@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	parse "github.com/dratzinger/Advent-of-Code/2021/util"
+	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 	"gonum.org/v1/gonum/mat"
 )
 

@@ -14,30 +14,38 @@ func main() {
 }
 
 func Part1(input []string) int {
-	xPos, yPos := 0, 0
-
-	var direction string
-	var value int
-
-	for _, line := range input {
-		_, err := fmt.Sscanf(line, "%s %d", &direction, &value)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		switch direction {
-		case "forward":
-			xPos += value
-		case "down":
-			yPos += value
-		case "up":
-			yPos -= value
-		}
-	}
-	return xPos * yPos
+	return pilotSub(input)
 }
 
 func Part2(input []string) (count int) {
+	return
+}
+
+func pilotSub(input []string) int {
+	var horizontal, depth int
+
+	for _, instruction := range input {
+		if instruction != "" {
+			direction, value := parseInstruction(instruction)
+
+			switch direction {
+			case "forward":
+				horizontal += value
+			case "down":
+				depth += value
+			case "up":
+				depth -= value
+			}
+		}
+	}
+	return horizontal * depth
+}
+
+func parseInstruction(instruction string) (direction string, value int) {
+	_, err := fmt.Sscanf(instruction, "%s %d", &direction, &value)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 	return
 }

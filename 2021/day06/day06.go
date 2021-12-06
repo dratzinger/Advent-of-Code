@@ -18,31 +18,12 @@ func main() {
 
 func Part1(input []string) int {
 	population := parse.IntSlice(input)
-	days := 80
-	return len(simulate(population, days, 6))
+	return binnedSim(population, 80)
 }
 
 func Part2(input []string) int {
 	population := parse.IntSlice(input)
 	return binnedSim(population, 256)
-}
-
-func simulate(population []int, steps, cycleTime int) []int {
-	for i := 0; i < steps; i++ {
-		population = simpleSim(population, cycleTime)
-	}
-	return population
-}
-
-func simpleSim(population []int, cycleTime int) (result []int) {
-	for _, val := range population {
-		if val == 0 {
-			result = append(result, cycleTime, cycleTime+2)
-		} else {
-			result = append(result, val-1)
-		}
-	}
-	return result
 }
 
 func binnedSim(population []int, days int) int {

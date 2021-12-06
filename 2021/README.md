@@ -5,8 +5,8 @@ Baby steps in Go for [AoC 2021](https://adventofcode.com/2021/)
 | Solved:        |               |
 |:-------------- |:------------- |
 | [Day 1](day01) | :star: :star: |
-| [Day 2](day02) | :star:        |
-| Day 3          |               |
+| [Day 2](day02) | :star: :star: |
+| [Day 3](day03) |               |
 | [Day 4](day04) | :star: :star: |
 | [Day 5](day05) | :star: :star: |
 | [Day 6](day06) | :star: :star: |

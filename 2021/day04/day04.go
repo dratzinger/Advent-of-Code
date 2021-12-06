@@ -28,7 +28,7 @@ func Part1(input []string) int {
 	for _, call := range draws {
 		winners := playBingo(call, boards)
 		if len(winners) > 0 {
-			return call * score(&boards[winners[0]])
+			return call * score(boards[winners[0]])
 		}
 	}
 	return -1
@@ -42,27 +42,28 @@ func Part2(input []string) (count int) {
 	for _, call := range draws {
 		winners := playBingo(call, boards)
 		if len(winners) > 0 {
-			if len(boards) == 1 {
-				return call * score(&boards[0])
-			}
-			for i, winner := range winners {
-				boards = removeBoard(boards, winner-i)
+			for _, winner := range winners {
+				if len(boards) == 1 {
+					return call * score((boards[winner]))
+				}
+				delete(boards, winner)
 			}
 		}
 	}
 	return -1
 }
 
-func makeBoards(data []string) (boards []board) {
-	for _, val := range data {
+func makeBoards(data []string) map[int]board {
+	boards := make(map[int]board)
+	for i, val := range data {
 		nums := parse.IntBlock(val, " ", "\n")
 		board := board{data: nums}
-		boards = append(boards, board)
+		boards[i] = board
 	}
 	return boards
 }
 
-func playBingo(call int, boards []board) (winners []int) {
+func playBingo(call int, boards map[int]board) (winners []int) {
 	for i, b := range boards {
 		markCalled(call, &b)
 		won := b.colMin < -4 || b.rowMin < -4
@@ -104,7 +105,7 @@ func sumCol(data [][]int, col int) (sum int) {
 	return sum
 }
 
-func score(board *board) (sum int) {
+func score(board board) (sum int) {
 	for _, row := range board.data {
 		for _, val := range row {
 			if val > -1 {
@@ -113,9 +114,4 @@ func score(board *board) (sum int) {
 		}
 	}
 	return sum
-}
-
-func removeBoard(boards []board, i int) []board {
-	boards[i] = boards[len(boards)-1]
-	return boards[:len(boards)-1]
 }

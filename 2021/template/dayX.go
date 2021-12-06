@@ -8,8 +8,8 @@ import (
 
 func main() {
 	in := parse.StrLines("input.txt")
-	fmt.Println("Day 2 - Pt. 1:", Part1(in))
-	fmt.Println("Day 2 - Pt. 2:", Part2(in))
+	fmt.Println("Day X - Pt. 1:", Part1(in))
+	fmt.Println("Day X - Pt. 2:", Part2(in))
 }
 
 func Part1(input []string) (count int) {

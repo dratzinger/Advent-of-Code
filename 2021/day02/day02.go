@@ -14,15 +14,15 @@ func main() {
 }
 
 func Part1(input []string) int {
-	return pilotSub(input)
+	return pilotSub(input, false)
 }
 
 func Part2(input []string) (count int) {
-	return
+	return pilotSub(input, true)
 }
 
-func pilotSub(input []string) int {
-	var horizontal, depth int
+func pilotSub(input []string, complicated bool) int {
+	var horizontal, depth, aim int
 
 	for _, instruction := range input {
 		if instruction != "" {
@@ -31,10 +31,21 @@ func pilotSub(input []string) int {
 			switch direction {
 			case "forward":
 				horizontal += value
+				if complicated {
+					depth += aim * value
+				}
 			case "down":
-				depth += value
+				if complicated {
+					aim += value
+				} else {
+					depth += value
+				}
 			case "up":
-				depth -= value
+				if complicated {
+					aim -= value
+				} else {
+					depth -= value
+				}
 			}
 		}
 	}

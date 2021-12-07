@@ -7,23 +7,30 @@ func Abs(x int) int {
 	return x
 }
 
-func Max(vals ...int) int {
-	max := vals[0]
+func AbsDiff(a, b int) int {
+	return Abs(a - b)
+}
+
+func Extrema(vals ...int) (min, max int) {
+	min = vals[0]
+	max = vals[0]
 	for _, v := range vals {
 		if v > max {
 			max = v
+		} else if v < min {
+			min = v
 		}
 	}
+	return min, max
+}
+
+func Max(vals ...int) int {
+	_, max := Extrema(vals...)
 	return max
 }
 
 func Min(vals ...int) int {
-	min := vals[0]
-	for _, v := range vals {
-		if v < min {
-			min = v
-		}
-	}
+	min, _ := Extrema(vals...)
 	return min
 }
 
@@ -32,4 +39,10 @@ func Sum(vals ...int) (sum int) {
 		sum += val
 	}
 	return sum
+}
+
+func Mean(vals ...int) float64 {
+	sum := Sum(vals...)
+	n := len(vals)
+	return float64(sum) / float64(n)
 }

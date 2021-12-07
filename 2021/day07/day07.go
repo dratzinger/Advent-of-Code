@@ -26,28 +26,6 @@ func Part2(input []string) (count int) {
 	return
 }
 
-func alignToMean(depths []int) (sum int) {
-	mean := integers.Mean(depths...)
-	truncMean := int(mean)
-	return align(depths, truncMean)
-}
-
-func alignToMedian(positions []int) (sum int) {
-	median := integers.Median(positions...)
-	truncMed := int(median)
-	return align(positions, truncMed)
-}
-
-func align(positions []int, val int) (sum int) {
-	for _, v := range positions {
-		low := integers.AbsDiff(v, val)
-		high := integers.AbsDiff(v, val+1)
-		minDiff := integers.Min(low, high)
-		sum += minDiff
-	}
-	return sum
-}
-
 func differences(positions []int, val int) (sum int) {
 	for _, v := range positions {
 		sum += integers.AbsDiff(v, val)

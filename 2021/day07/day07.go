@@ -17,8 +17,9 @@ func main() {
 }
 
 func Part1(input []string) int {
-	depths := parse.IntSlice(input)
-	return alignToMedian(depths)
+	positions := parse.IntSlice(input)
+	mean := int(integers.Mean(positions...))
+	return bruteMinimize(positions, mean, .25)
 }
 
 func Part2(input []string) (count int) {
@@ -31,18 +32,37 @@ func alignToMean(depths []int) (sum int) {
 	return align(depths, truncMean)
 }
 
-func alignToMedian(depths []int) (sum int) {
-	median := integers.Median(depths...)
+func alignToMedian(positions []int) (sum int) {
+	median := integers.Median(positions...)
 	truncMed := int(median)
-	return align(depths, truncMed)
+	return align(positions, truncMed)
 }
 
-func align(depths []int, val int) (sum int) {
-	for _, v := range depths {
+func align(positions []int, val int) (sum int) {
+	for _, v := range positions {
 		low := integers.AbsDiff(v, val)
 		high := integers.AbsDiff(v, val+1)
 		minDiff := integers.Min(low, high)
 		sum += minDiff
 	}
 	return sum
+}
+
+func differences(positions []int, val int) (sum int) {
+	for _, v := range positions {
+		sum += integers.AbsDiff(v, val)
+	}
+	return sum
+}
+
+// try aligning to a value plus minus a percentage of the data range
+// then return the minimum
+func bruteMinimize(positions []int, align int, percentage float64) int {
+	dataRange := float64(integers.Range(positions...))
+	offset := int(dataRange * percentage)
+	cost := []int{}
+	for val := align - offset; val < align+offset; val++ {
+		cost = append(cost, differences(positions, val))
+	}
+	return integers.Min(cost...)
 }

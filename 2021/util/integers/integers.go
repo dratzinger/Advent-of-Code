@@ -44,6 +44,11 @@ func Min(vals ...int) int {
 	return min
 }
 
+func Range(vals ...int) int {
+	min, max := Extrema(vals...)
+	return max - min
+}
+
 func Sum(vals ...int) (sum int) {
 	for _, val := range vals {
 		sum += val

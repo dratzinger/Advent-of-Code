@@ -10,7 +10,7 @@ Baby steps in Go for [AoC 2021](https://adventofcode.com/2021/)
 | [Day 4](day04) | :star: :star: |
 | [Day 5](day05) | :star: :star: |
 | [Day 6](day06) | :star: :star: |
-| Day 7          |               |
+| [Day 7](day07) | :star: :star: |
 | Day 8          |               |
 | Day 9          |               |
 | Day 10         |               |

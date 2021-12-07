@@ -1,5 +1,7 @@
 package integers
 
+import "sort"
+
 func Abs(x int) int {
 	if x < 0 {
 		return -x
@@ -24,6 +26,14 @@ func Extrema(vals ...int) (min, max int) {
 	return min, max
 }
 
+func Even(x int) bool {
+	return x%2 == 0
+}
+
+func Odd(x int) bool {
+	return !Even(x)
+}
+
 func Max(vals ...int) int {
 	_, max := Extrema(vals...)
 	return max
@@ -45,4 +55,15 @@ func Mean(vals ...int) float64 {
 	sum := Sum(vals...)
 	n := len(vals)
 	return float64(sum) / float64(n)
+}
+
+func Median(vals ...int) float64 {
+	sorted := sort.IntSlice(vals)
+	length := len(vals)
+	middle := length / 2
+
+	if Odd(length) {
+		return float64(sorted[middle])
+	}
+	return Mean(sorted[middle-1] + sorted[middle])
 }

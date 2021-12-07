@@ -18,7 +18,7 @@ func main() {
 
 func Part1(input []string) int {
 	depths := parse.IntSlice(input)
-	return alignToMean(depths)
+	return alignToMedian(depths)
 }
 
 func Part2(input []string) (count int) {
@@ -28,9 +28,19 @@ func Part2(input []string) (count int) {
 func alignToMean(depths []int) (sum int) {
 	mean := integers.Mean(depths...)
 	truncMean := int(mean)
+	return align(depths, truncMean)
+}
+
+func alignToMedian(depths []int) (sum int) {
+	median := integers.Median(depths...)
+	truncMed := int(median)
+	return align(depths, truncMed)
+}
+
+func align(depths []int, val int) (sum int) {
 	for _, v := range depths {
-		low := integers.AbsDiff(v, truncMean)
-		high := integers.AbsDiff(v, truncMean+1)
+		low := integers.AbsDiff(v, val)
+		high := integers.AbsDiff(v, val+1)
 		minDiff := integers.Min(low, high)
 		sum += minDiff
 	}

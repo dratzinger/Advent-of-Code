@@ -37,22 +37,27 @@ func makeHeightmap(input []string) (heights [][]int) {
 	return heights
 }
 
-func findLowPoints(heights [][]int) (lowPoints []int) {
-	var directions = func(x, y int) (directions [][]int) {
+func makeDirectionFn(maxX, maxY int) func(int, int) [][]int {
+	var dirFn = func(x, y int) (directions [][]int) {
 		if x != 0 {
 			directions = append(directions, []int{-1, 0})
 		}
-		if x != len(heights[0])-1 {
+		if x != maxX {
 			directions = append(directions, []int{1, 0})
 		}
 		if y != 0 {
 			directions = append(directions, []int{0, -1})
 		}
-		if y != len(heights)-1 {
+		if y != maxY {
 			directions = append(directions, []int{0, 1})
 		}
 		return directions
 	}
+	return dirFn
+}
+
+func findLowPoints(heights [][]int) (lowPoints []int) {
+	directions := makeDirectionFn(len(heights[0])-1, len(heights)-1)
 
 	for y, row := range heights {
 		for x, height := range row {

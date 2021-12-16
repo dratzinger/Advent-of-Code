@@ -70,13 +70,12 @@ func Mean(vals ...int) float64 {
 	return float64(sum) / float64(n)
 }
 
-func Median(vals ...int) float64 {
-	sorted := sort.IntSlice(vals)
+func OddMedian(vals ...int) int {
 	length := len(vals)
-	middle := length / 2
-
-	if Odd(length) {
-		return float64(sorted[middle])
+	if Even(length) {
+		panic("OddMedian requires odd number of values")
+	} else {
+		sort.Ints(vals)
+		return vals[length/2]
 	}
-	return Mean(sorted[middle-1] + sorted[middle])
 }

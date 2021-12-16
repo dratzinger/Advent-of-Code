@@ -4,15 +4,24 @@ import (
 	"fmt"
 
 	"github.com/dratzinger/Advent-of-Code/2021/util/collections"
+	"github.com/dratzinger/Advent-of-Code/2021/util/integers"
 	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 )
 
-var points = map[rune]int{
+var errorPoints = map[rune]int{
 	')': 3,
 	']': 57,
 	'}': 1197,
 	'>': 25137,
 }
+
+var completionPoints = map[rune]int{
+	')': 1,
+	']': 2,
+	'}': 3,
+	'>': 4,
+}
+
 var closing = map[rune]rune{
 	'(': ')',
 	'[': ']',
@@ -27,40 +36,62 @@ func main() {
 }
 
 var corrupted map[int]rune
+var completionScores []int
 
 func Part1(input []string) (sum int) {
-	corrupted = findCorrupted(input)
+	corrupted, completionScores = errorCheck(input)
 	for _, bracket := range corrupted {
-		sum += points[bracket]
+		sum += errorPoints[bracket]
 	}
 	return sum
 }
 
-func Part2(input []string) (count int) {
-	if corrupted == nil {
-		corrupted = findCorrupted(input)
+func Part2(input []string) (median int) {
+	if completionScores == nil {
+		Part1(input)
 	}
-	return
+	return integers.OddMedian(completionScores...)
 }
 
-func findCorrupted(input []string) map[int]rune {
-	corrupted := make(map[int]rune)
+func errorCheck(input []string) (corrupted map[int]rune, scores []int) {
+	corrupted = make(map[int]rune)
 
 	for i, line := range input {
 		open := new(collections.Stack)
-	lineCheck:
-		for _, bracket := range line {
-			switch bracket {
-			case '(', '[', '{', '<':
-				open.Push(bracket)
-			case ')', ']', '}', '>':
-				lastOpened := open.Pop()
-				if lastOpened == nil || closing[lastOpened.(rune)] != bracket {
-					corrupted[i] = bracket
-					break lineCheck
+
+		// Check for errors
+		lineValid := func() bool {
+			for _, bracket := range line {
+				switch bracket {
+				case '(', '[', '{', '<':
+					open.Push(bracket)
+				case ')', ']', '}', '>':
+					lastOpened := open.Pop().(rune)
+					if closing[lastOpened] != bracket {
+						corrupted[i] = bracket
+						return false
+					}
 				}
 			}
+			return true
+		}
+
+		// Check for completion
+		completionScore := func() (score int) {
+			for open.NotEmpty() {
+				closable := open.Pop().(rune)
+				closer := closing[closable]
+				score *= 5
+				score += completionPoints[closer]
+			}
+			return score
+		}
+
+		notCorrupted := lineValid()
+		score := completionScore()
+		if notCorrupted && score > 0 {
+			scores = append(scores, score)
 		}
 	}
-	return corrupted
+	return corrupted, scores
 }

@@ -4,12 +4,16 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/golang-collections/collections/stack"
+
 	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 )
 
 type point struct {
 	x, y int
 }
+type direction point
+type mapData [][]int
 
 func main() {
 	in := parse.StrLines("input.txt")
@@ -27,10 +31,11 @@ func Part1(input []string) (risk int) {
 
 func Part2(input []string) (count int) {
 	heightMap, lowPoints := crunch(input)
+	basinLimit := 9
 
 	basins := []int{}
 	for _, v := range lowPoints {
-		sum := FloodSum(heightMap, v.x, v.y)
+		sum := mapData(heightMap).fill4(v.x, v.y, basinLimit)
 		basins = append(basins, sum)
 	}
 	// sort the basins
@@ -49,7 +54,7 @@ func crunch(input []string) (heightMap [][]int, lowPoints []point) {
 	return heightMap, lowPoints
 }
 
-var directions func(int, int) [][]int
+var directions func(int, int) []direction
 
 func makeHeightmap(input []string) (heights [][]int) {
 	heights = parse.IntMatrix(input)
@@ -57,19 +62,19 @@ func makeHeightmap(input []string) (heights [][]int) {
 	return heights
 }
 
-func makeDirectionFn(maxX, maxY int) func(int, int) [][]int {
-	var dirFn = func(x, y int) (directions [][]int) {
+func makeDirectionFn(maxX, maxY int) func(int, int) []direction {
+	var dirFn = func(x, y int) (directions []direction) {
 		if x != 0 {
-			directions = append(directions, []int{-1, 0})
+			directions = append(directions, direction{-1, 0})
 		}
 		if x != maxX {
-			directions = append(directions, []int{1, 0})
+			directions = append(directions, direction{1, 0})
 		}
 		if y != 0 {
-			directions = append(directions, []int{0, -1})
+			directions = append(directions, direction{0, -1})
 		}
 		if y != maxY {
-			directions = append(directions, []int{0, 1})
+			directions = append(directions, direction{0, 1})
 		}
 		return directions
 	}
@@ -81,7 +86,7 @@ func findLowPoints(heights [][]int) (lowPoints []point) {
 		for x, height := range row {
 			var isLowPoint = func(heights [][]int, x, y int) bool {
 				for _, direction := range directions(x, y) {
-					if heights[y+direction[1]][x+direction[0]] <= height {
+					if heights[y+direction.y][x+direction.x] <= height {
 						return false
 					}
 				}
@@ -100,9 +105,24 @@ func FloodSum(heights [][]int, x, y int) (sum int) {
 	sum += heights[y][x]
 	heights[y][x] = 0
 	for _, direction := range directions(x, y) {
-		if heights[y+direction[1]][x+direction[0]] != 9 {
-			sum += FloodSum(heights, x+direction[0], y+direction[1])
+		if heights[y+direction.y][x+direction.x] != 9 {
+			sum += FloodSum(heights, x+direction.x, y+direction.y)
 		}
 	}
 	return sum
+}
+
+func (data mapData) fill4(x, y, threshold int) (sum int) {
+	s := new(stack.Stack)
+	s.Push(point{x, y})
+	for s.Len() > 0 {
+		p := s.Pop().(point)
+		if data[p.y][p.x] < threshold {
+			sum += data[y][x]
+			s.Push(x, y+1)
+			s.Push(x, y-1)
+			s.Push(x+1, y)
+			s.Push(x-1, y)
+		}
+	}
 }

@@ -52,15 +52,7 @@ func crunch(input []string) (heightMap [][]int, lowPoints []point) {
 var directions func(int, int) [][]int
 
 func makeHeightmap(input []string) (heights [][]int) {
-	for _, line := range input {
-		if values := []int{}; line != "" {
-			for _, v := range line {
-				point := string(v)
-				values = append(values, parse.ToInt(point))
-			}
-			heights = append(heights, values)
-		}
-	}
+	heights = parse.IntMatrix(input)
 	directions = makeDirectionFn(len(heights[0])-1, len(heights)-1)
 	return heights
 }

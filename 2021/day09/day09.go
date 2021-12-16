@@ -22,7 +22,7 @@ func main() {
 }
 
 func Part1(input []string) (risk int) {
-	heightMap, lowPoints := crunch(input)
+	heightMap, lowPoints := prepare(input)
 	for _, p := range lowPoints {
 		risk += 1 + heightMap[p.y][p.x]
 	}
@@ -30,12 +30,12 @@ func Part1(input []string) (risk int) {
 }
 
 func Part2(input []string) (count int) {
-	heightMap, lowPoints := crunch(input)
+	heightMap, lowPoints := prepare(input)
 	basinLimit := 9
 
 	basins := []int{}
 	for _, v := range lowPoints {
-		sum := mapData(heightMap).fill4(v.x, v.y, basinLimit)
+		sum := heightMap.fill4(point{v.x, v.y}, basinLimit)
 		basins = append(basins, sum)
 	}
 	// sort the basins
@@ -48,7 +48,7 @@ func Part2(input []string) (count int) {
 	return count
 }
 
-func crunch(input []string) (heightMap [][]int, lowPoints []point) {
+func prepare(input []string) (heightMap mapData, lowPoints []point) {
 	heightMap = makeHeightmap(input)
 	lowPoints = findLowPoints(heightMap)
 	return heightMap, lowPoints
@@ -112,17 +112,18 @@ func FloodSum(heights [][]int, x, y int) (sum int) {
 	return sum
 }
 
-func (data mapData) fill4(x, y, threshold int) (sum int) {
+func (data mapData) fill4(seed point, threshold int) (sum int) {
 	s := new(stack.Stack)
-	s.Push(point{x, y})
+	s.Push(seed)
 	for s.Len() > 0 {
 		p := s.Pop().(point)
-		if data[p.y][p.x] < threshold {
+		x, y := p.x, p.y
+		if data[y][x] < threshold {
 			sum += data[y][x]
-			s.Push(x, y+1)
-			s.Push(x, y-1)
-			s.Push(x+1, y)
-			s.Push(x-1, y)
+			for _, direction := range directions(x, y) {
+				s.Push(point{x + direction.x, y + direction.y})
+			}
 		}
 	}
+	return sum
 }

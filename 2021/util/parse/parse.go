@@ -47,6 +47,19 @@ func IntSlice(input []string) (ints []int) {
 	return ints
 }
 
+func IntMatrix(input []string) (heights [][]int) {
+	for _, line := range input {
+		if values := []int{}; line != "" {
+			for _, v := range line {
+				point := string(v)
+				values = append(values, ToInt(point))
+			}
+			heights = append(heights, values)
+		}
+	}
+	return heights
+}
+
 func ToInt(str string) int {
 	val, err := strconv.Atoi(str)
 

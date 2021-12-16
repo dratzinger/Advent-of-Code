@@ -56,6 +56,14 @@ func Sum(vals ...int) (sum int) {
 	return sum
 }
 
+func Product(vals ...int) int {
+	product := 1
+	for _, val := range vals {
+		product *= val
+	}
+	return product
+}
+
 func Mean(vals ...int) float64 {
 	sum := Sum(vals...)
 	n := len(vals)

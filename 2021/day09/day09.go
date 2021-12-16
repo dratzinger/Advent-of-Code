@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/golang-collections/collections/stack"
-
+	"github.com/dratzinger/Advent-of-Code/2021/util/collections"
+	"github.com/dratzinger/Advent-of-Code/2021/util/integers"
 	"github.com/dratzinger/Advent-of-Code/2021/util/parse"
 )
 
@@ -13,7 +13,6 @@ type point struct {
 	x, y int
 }
 type direction point
-type mapData [][]int
 
 func main() {
 	in := parse.StrLines("input.txt")
@@ -34,21 +33,19 @@ func Part2(input []string) (count int) {
 	basinLimit := 9
 
 	basins := []int{}
+	data := makeMapData(heightMap)
 	for _, v := range lowPoints {
-		sum := heightMap.fill4(point{v.x, v.y}, basinLimit)
-		basins = append(basins, sum)
+		size := data.floodBasin(point{v.x, v.y}, basinLimit)
+		basins = append(basins, size)
 	}
 	// sort the basins
 	sort.IntSlice(basins).Sort()
 	topThree := basins[len(basins)-3:]
 
-	for _, v := range topThree {
-		count += v
-	}
-	return count
+	return integers.Product(topThree...)
 }
 
-func prepare(input []string) (heightMap mapData, lowPoints []point) {
+func prepare(input []string) (heightMap [][]int, lowPoints []point) {
 	heightMap = makeHeightmap(input)
 	lowPoints = findLowPoints(heightMap)
 	return heightMap, lowPoints
@@ -101,29 +98,36 @@ func findLowPoints(heights [][]int) (lowPoints []point) {
 	return lowPoints
 }
 
-func FloodSum(heights [][]int, x, y int) (sum int) {
-	sum += heights[y][x]
-	heights[y][x] = 0
-	for _, direction := range directions(x, y) {
-		if heights[y+direction.y][x+direction.x] != 9 {
-			sum += FloodSum(heights, x+direction.x, y+direction.y)
-		}
-	}
-	return sum
+type mapData struct {
+	values  [][]int
+	visited [][]bool
 }
 
-func (data mapData) fill4(seed point, threshold int) (sum int) {
-	s := new(stack.Stack)
+func makeMapData(vals [][]int) mapData {
+	rowLen := len(vals[0])
+	visited := make([][]bool, len(vals))
+	for i := range vals {
+		visited[i] = make([]bool, rowLen)
+	}
+	return mapData{
+		values:  vals,
+		visited: visited,
+	}
+}
+
+func (m *mapData) floodBasin(seed point, threshold int) (size int) {
+	s := new(collections.Stack)
 	s.Push(seed)
-	for s.Len() > 0 {
+	for s.NotEmpty() {
 		p := s.Pop().(point)
 		x, y := p.x, p.y
-		if data[y][x] < threshold {
-			sum += data[y][x]
+		if !m.visited[y][x] && m.values[y][x] < threshold {
+			size++
+			m.visited[y][x] = true
 			for _, direction := range directions(x, y) {
 				s.Push(point{x + direction.x, y + direction.y})
 			}
 		}
 	}
-	return sum
+	return size
 }

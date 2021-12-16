@@ -11,6 +11,7 @@ func (s *Stack) Push(item interface{}) {
 }
 
 // Pop removes and returns the last item of the stack.
+// If the stack is empty, nil is returned.
 func (s *Stack) Pop() interface{} {
 	if s.Empty() {
 		return nil
@@ -21,6 +22,7 @@ func (s *Stack) Pop() interface{} {
 }
 
 // Peek returns the last item of the stack without removing it.
+// If the stack is empty, nil is returned.
 func (s *Stack) Peek() interface{} {
 	if s.Empty() {
 		return nil

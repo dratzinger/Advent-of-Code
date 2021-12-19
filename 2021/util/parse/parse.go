@@ -24,6 +24,15 @@ func StrLines(filename string) []string {
 	return strings.Split(content, "\n")
 }
 
+func Stripped(filename string) (out []string) {
+	for _, line := range StrLines(filename) {
+		if line != "" {
+			out = append(out, line)
+		}
+	}
+	return out
+}
+
 func Int(input string, base int) int64 {
 	val, err := strconv.ParseInt(input, 2, 64)
 

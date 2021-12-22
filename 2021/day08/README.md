@@ -134,3 +134,38 @@ Following this same process for each entry in the second, larger example above, 
 Adding all of the output values in this larger example produces _`61229`_.
 
 For each entry, determine all of the wire/segment connections and decode the four-digit output values. _What do you get if you add up all of the output values?_
+
+
+## Solution
+
+<details>
+  <summary>Spoiler warning</summary>
+
+First let's make a list of all numbers and their active segments:
+
+|   | segments | a | b | c | d | e | f | g |
+|:-:|:--------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 |    2     |   |   | ✘ |   |   | ✘ |   |
+| 2 |    5     | ✘ |   | ✘ | ✘ | ✘ |   | ✘ |
+| 3 |    5     | ✘ |   | ✘ | ✘ |   | ✘ | ✘ |
+| 4 |    4     |   | ✘ | ✘ | ✘ |   | ✘ |   |
+| 5 |    5     | ✘ | ✘ |   | ✘ |   | ✘ | ✘ |
+| 6 |    6     | ✘ | ✘ |   | ✘ | ✘ | ✘ | ✘ |
+| 7 |    3     | ✘ |   | ✘ |   |   | ✘ |   |
+| 8 |    7     | ✘ | ✘ | ✘ | ✘ | ✘ | ✘ | ✘ |
+| 9 |    6     | ✘ | ✘ | ✘ | ✘ |   | ✘ | ✘ |
+| 0 |    6     | ✘ | ✘ | ✘ |   | ✘ | ✘ | ✘ |
+
+Numbers with a unique number of segments (1, 4, 7, 8) can easily be recognized (Task 1). The remaining numbers have either five or six active segments. We can isolate certain numbers in both groups using the *segments they have in common* with the known (unique) numbers.
+
+**Six segments:** 6, 9, 0
+- **6** has only *one* segment in common with **1**, while the others have *two*.
+- **0** has *three* segments in common with **4**, while **9** has *four*.
+
+**Five segments:** 2, 3, 5
+- **2** has *two* segments in common with **4**, while the other numbers have *three*.
+- **5** and **6** have *five* segments in common, while **3** has *four*.
+
+To map all the patterns to the ten numbers, we need to first resolve the ones with six digits, so we can use **6** to resolve the rest.
+
+</details>

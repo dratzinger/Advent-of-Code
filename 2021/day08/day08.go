@@ -14,11 +14,11 @@ func main() {
 	fmt.Println("Day 8 - Pt. 2:", Part2(in))
 }
 
-var unique = map[int]int{
-	2: 1,
-	3: 7,
-	4: 4,
-	7: 8,
+var unique = map[int]byte{
+	2: '1',
+	3: '7',
+	4: '4',
+	7: '8',
 }
 
 func Part1(input []string) (count int) {
@@ -63,8 +63,9 @@ func resolvePatterns(patterns []string) map[string]byte {
 		switch len(pattern) {
 		case 2, 3, 4, 7:
 			number := unique[len(pattern)]
-			known[number] = pattern
-			resolved[pattern] = byte(number)
+			i := parse.ToInt(string(number))
+			known[i] = pattern
+			resolved[pattern] = number
 		case 5:
 			fiveLen = append(fiveLen, pattern)
 		case 6:
@@ -72,12 +73,40 @@ func resolvePatterns(patterns []string) map[string]byte {
 		}
 	}
 
+	for k, v := range resolveSixLen(sixLen, &known) {
+		resolved[k] = v
+	}
+
 	for k, v := range resolveFiveLen(fiveLen, known) {
 		resolved[k] = v
 	}
 
-	for k, v := range resolveSixLen(sixLen, known) {
-		resolved[k] = v
+	if len(resolved) != 10 {
+		panic("not all patterns resolved")
+	}
+	return resolved
+}
+
+func resolveSixLen(candidates []string, known *map[int]string) map[string]byte {
+	resolved := make(map[string]byte)
+	num := *known
+	for _, pattern := range candidates {
+		common := findCommon(pattern, num[1])
+		if common == 1 {
+			resolved[pattern] = '6'
+			num[6] = pattern
+		}
+	}
+
+	for _, pattern := range candidates {
+		if _, done := resolved[pattern]; !done {
+			common := findCommon(pattern, num[4])
+			if common == 4 {
+				resolved[pattern] = '9'
+			} else if common == 3 {
+				resolved[pattern] = '0'
+			}
+		}
 	}
 	return resolved
 }
@@ -85,28 +114,30 @@ func resolvePatterns(patterns []string) map[string]byte {
 func resolveFiveLen(candidates []string, known map[int]string) map[string]byte {
 	resolved := make(map[string]byte)
 	for _, pattern := range candidates {
-		if findDifference(pattern, known[7]) == 3 {
-			resolved[pattern] = byte(2)
-		}
-
-		if findDifference(pattern, known[1]) == 4 {
-			resolved[pattern] = byte(5)
+		common := findCommon(pattern, known[4])
+		if common == 2 {
+			resolved[pattern] = '2'
 		}
 	}
-	remaining := candidates[0]
-	resolved[remaining] = byte(3)
+
+	for _, pattern := range candidates {
+		if _, done := resolved[pattern]; !done {
+			common := findCommon(pattern, known[6])
+			if common == 5 {
+				resolved[pattern] = '5'
+			} else if common == 4 {
+				resolved[pattern] = '3'
+			}
+		}
+	}
 	return resolved
 }
 
-func resolveSixLen(candidates []string, known map[int]string) map[string]byte {
-	panic("unimplemented")
-}
-
-// find the number of characters that are contained in
-// one string but not the other
-func findDifference(s1, s2 string) (count int) {
+// find the number of characters that are contained
+// in both strings
+func findCommon(s1, s2 string) (count int) {
 	for _, c := range s1 {
-		if !strings.Contains(s2, string(c)) {
+		if strings.Contains(s2, string(c)) {
 			count++
 		}
 	}

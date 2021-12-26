@@ -13,9 +13,15 @@ func main() {
 }
 
 func Part1(input []string) (count int) {
-	return
+	population := parse.IntMatrix(input)
+	return simulate(population, 100)
 }
 
 func Part2(input []string) (count int) {
 	return
+}
+
+func simulate(population [][]int, i int) (flashes int) {
+
+	return flashes
 }

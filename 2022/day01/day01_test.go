@@ -29,7 +29,7 @@ func TestPart1(t *testing.T) {
 
 func TestPart2(t *testing.T) {
 	result := Part2(input)
-	reference := -1
+	reference := 45000
 	if result != reference {
 		t.Errorf("Result was incorrect, got: %d, want: %d.", result, reference)
 	}

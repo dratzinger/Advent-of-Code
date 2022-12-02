@@ -18,3 +18,12 @@ func StringSlice(in []string) (out []string) {
 	}
 	return
 }
+
+// sort integers in a slice in descending order
+func IntSliceDesc(input []int) []int {
+	ints := []int(input)
+	sort.Slice(ints, func(i, j int) bool {
+		return ints[i] > ints[j]
+	})
+	return ints
+}

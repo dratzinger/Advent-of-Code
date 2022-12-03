@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/dratzinger/Advent-of-Code/2022/util/integers"
 	"github.com/dratzinger/Advent-of-Code/2022/util/parse"
 )
 
@@ -13,7 +15,38 @@ func main() {
 }
 
 func Part1(input []string) (count int) {
-	return
+	priorities := makePriorityMap()
+	duplicatePriorities := []int{}
+	for _, line := range input {
+		if len(line) > 1 {
+			itemType := findDuplicate(line)
+			itemPriority := priorities[itemType]
+			duplicatePriorities = append(duplicatePriorities, itemPriority)
+		}
+	}
+	return integers.Sum(duplicatePriorities...)
+}
+
+func makePriorityMap() (list map[rune]int) {
+	list = make(map[rune]int)
+	letters := "abcdefghijklmnopqrstuvwxyz"
+	upper := strings.ToUpper(letters)
+	letters = letters + upper
+	for i, letter := range letters {
+		list[letter] = i + 1
+	}
+	return list
+}
+
+func findDuplicate(input string) rune {
+	half := len(input) / 2
+	for _, letter := range input[:half] {
+		contained := strings.Contains(input[half:], string(letter))
+		if contained {
+			return letter
+		}
+	}
+	return 0
 }
 
 func Part2(input []string) (count int) {

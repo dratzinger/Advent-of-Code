@@ -4,9 +4,9 @@ The show must Go on with [AoC 2022](https://adventofcode.com/2022/)
 
 | Solved:        |               |
 |:-------------- |:------------- |
-| [Day 1](day01) |               |
-| Day 2          |               |
-| Day 3          |               |
+| [Day 1](day01) | :star: :star: |
+| [Day 2](day02) |               |
+| [Day 3](day03) | :star: :star: |
 | Day 4          |               |
 | Day 5          |               |
 | Day 6          |               |

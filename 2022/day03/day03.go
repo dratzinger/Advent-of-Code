@@ -50,5 +50,26 @@ func findDuplicate(input string) rune {
 }
 
 func Part2(input []string) (count int) {
-	return
+	priorities := makePriorityMap()
+	badgePriorities := []int{}
+	for i := range input {
+		if i%3 == 2 {
+			rucksacks := input[i-2 : i+1]
+			itemType := findBadge(rucksacks)
+			badgePriority := priorities[itemType]
+			badgePriorities = append(badgePriorities, badgePriority)
+		}
+	}
+	return integers.Sum(badgePriorities...)
+}
+
+func findBadge(input []string) rune {
+	for _, letter := range input[0] {
+		contained := strings.Contains(input[1], string(letter))
+		contained = contained && strings.Contains(input[2], string(letter))
+		if contained {
+			return letter
+		}
+	}
+	return 0
 }

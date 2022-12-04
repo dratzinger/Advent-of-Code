@@ -65,5 +65,20 @@ func parsePair(line string) assignmentPair {
 }
 
 func Part2(input []string) (count int) {
-	return
+	assignments := parseAssignments(input)
+	for _, pair := range assignments {
+		if overlaps(pair.a, pair.b) {
+			count++
+		}
+	}
+	return count
+}
+
+func overlaps(a, b assignment) bool {
+	for i := a.from; i <= a.to; i++ {
+		if i >= b.from && i <= b.to {
+			return true
+		}
+	}
+	return false
 }

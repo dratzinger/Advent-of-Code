@@ -1,4 +1,4 @@
-# Day 3: Supply Stacks
+# Day 5: Supply Stacks
 
 [Source](https://adventofcode.com/2022/day/5)
 

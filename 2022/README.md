@@ -8,7 +8,7 @@ The show must Go on with [AoC 2022](https://adventofcode.com/2022/)
 | Day 2          |               |
 | [Day 3](day03) | :star: :star: |
 | [Day 4](day04) | :star: :star: |
-| Day 5          |               |
+| [Day 5](day05) | :star: :star: |
 | Day 6          |               |
 | Day 7          |               |
 | Day 8          |               |

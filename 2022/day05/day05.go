@@ -91,6 +91,6 @@ func buildPlan(rawPlan []string) []collections.Stack {
 	return plan
 }
 
-func Part2(input []string) (count int) {
+func Part2(input []string) (message string) {
 	return
 }

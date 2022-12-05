@@ -92,5 +92,26 @@ func buildPlan(rawPlan []string) []collections.Stack {
 }
 
 func Part2(input []string) (message string) {
-	return
+	plan, instructions := prepareInput(input)
+	for _, instruction := range instructions {
+		plan = execute9001Instruction(plan, instruction)
+	}
+	message = topCrates(plan)
+	return message
+}
+
+func execute9001Instruction(plan []collections.Stack, instruction []int) []collections.Stack {
+	count := instruction[0]
+	from := instruction[1] - 1
+	to := instruction[2] - 1
+	temp := new(collections.Stack)
+	for ; count > 0; count-- {
+		crate := plan[from].Pop()
+		temp.Push(crate)
+	}
+	for temp.NotEmpty() {
+		crate := temp.Pop()
+		plan[to].Push(crate)
+	}
+	return plan
 }

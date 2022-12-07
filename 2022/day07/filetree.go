@@ -68,15 +68,20 @@ func (dir *Dir) sumSizes() (total int) {
 // recursively walk the tree and sum dir sizes up to a certain threshold
 // (files are summed multiple times)
 func (t *Filetree) SumDirs(threshold int) (total int) {
-	return t.Root.sumDirs(threshold)
+	sizes := t.Root.sumDirs(threshold)
+	for _, size := range sizes {
+		total += size
+	}
+	return
 }
 
-func (dir *Dir) sumDirs(threshold int) (total int) {
-	if dir.sumSizes() <= threshold {
-		total += dir.sumSizes()
+func (dir *Dir) sumDirs(threshold int) (sizes []int) {
+	size := dir.sumSizes()
+	if size <= threshold {
+		sizes = append(sizes, size)
 	}
 	for _, d := range dir.Dirs {
-		total += d.sumDirs(threshold)
+		sizes = append(sizes, d.sumDirs(threshold)...)
 	}
 	return
 }

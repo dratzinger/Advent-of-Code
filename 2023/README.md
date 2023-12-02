@@ -11,7 +11,7 @@
 
 <!--SOLUTIONS-->
 
-[![Day](https://badgen.net/badge/01/%E2%98%85%E2%98%86/yellow)](src/day01)
+[![Day](https://badgen.net/badge/01/%E2%98%85%E2%98%85/green)](src/day01)
 ![Day](https://badgen.net/badge/02/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/03/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/04/%E2%98%86%E2%98%86/gray)
@@ -57,9 +57,9 @@ npm start <day>
 
 ```
 Day 01
-Time part 1: 1.659ms
-Time part 2: -
-Both parts: 1.659ms
+Time part 1: 53.23ms
+Time part 2: 62.621ms
+Both parts: 115.851ms
 ```
 
 ```
@@ -231,8 +231,8 @@ Both parts: -
 ```
 
 ```
-Total stars: 1/50
-Total time: 1.659ms
+Total stars: 2/50
+Total time: 115.851ms
 ```
 
 <!--/RESULTS-->

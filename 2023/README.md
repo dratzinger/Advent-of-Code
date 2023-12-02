@@ -1,9 +1,9 @@
 <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->
 
-[![AoC](https://badgen.net/badge/AoC/2023/blue)](https://adventofcode.com/2023)
-[![Node](https://badgen.net/badge/Node/v16.13.0+/blue)](https://nodejs.org/en/download/)
+[![AoC](https://badgen.net/badge/AoC/2023/green)](https://adventofcode.com/2023)
+[![Node](https://badgen.net/badge/Node/v21.3.0+/green)](https://nodejs.org/en/download/)
 ![Language](https://badgen.net/badge/Language/TypeScript/blue)
-[![Template](https://badgen.net/badge/Template/aocrunner/blue)](https://github.com/caderek/aocrunner)
+[![Template](https://badgen.net/badge/Template/aocrunner/black)](https://github.com/caderek/aocrunner)
 
 # 🎄 Advent of Code 2023 🎄
 
@@ -43,22 +43,10 @@ _Click a badge to go to the specific day._
 
 ---
 
-## Installation
-
-```
-npm i
-```
-
 ## Running in dev mode
 
 ```
 npm start <day>
-```
-
-Example:
-
-```
-npm start 1
 ```
 
 ---

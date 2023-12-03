@@ -40,13 +40,13 @@
           "543123",
           "546724"
         ],
-        "time": 4.9409
+        "time": 5.0012
       },
       "part2": {
-        "solved": false,
-        "result": null,
+        "solved": true,
+        "result": "87263515",
         "attempts": [],
-        "time": null
+        "time": 25.9334
       }
     },
     {

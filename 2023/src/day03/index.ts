@@ -5,29 +5,16 @@ const parseInput = (rawInput: string) => rawInput;
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const lines = input.split('\n');
-  const partNumbers = [] as number[];
 
-  lines.forEach((l, row) => {
-    const regexp = /\d+/g;
-    let match: RegExpExecArray | null;
-    while ((match = regexp.exec(l)) !== null) {
-      const raw = String(match[0]);
-      const value = Number.parseInt(raw);
-      const start = match.index;
-      const end = regexp.lastIndex - 1;
+  return Array.from(generatePartNumbers(lines))
+    .map((n) => n.value)
+    .reduce((sum, num) => (sum += num));
+};
 
-      const bounds: Schematic = { width: l.length, height: lines.length };
-      const neighbors = Array.from(
-        neighborhood({ start, end, row, value, raw }, bounds),
-      );
+const part2 = (rawInput: string) => {
+  const input = parseInput(rawInput);
 
-      if (checkForSymbols(lines, neighbors)) {
-        partNumbers.push(value);
-      }
-    }
-  });
-
-  return partNumbers.reduce((sum, num) => (sum += num), 0);
+  return;
 };
 
 type PartNumber = {
@@ -45,7 +32,9 @@ type Schematic = {
 
 type Coordinate = [x: number, y: number];
 
-function* neighborhood(
+const symbol = (char?: string) => Boolean(char?.match(/[^\.]/)?.length);
+
+function* neighbourhood(
   partNum: PartNumber,
   bounds: Schematic,
 ): Generator<Coordinate> {
@@ -69,40 +58,61 @@ function* neighborhood(
   }
 }
 
-const symbol = (char?: string) => Boolean(char?.match(/[^\.]/)?.length);
-
-const checkForSymbols = (data: string[], coords: Coordinate[]) => {
+const check = (
+  condition: typeof symbol,
+  data: string[],
+  coords: Coordinate[],
+) => {
   for (const coordinate of coords) {
     const char = data[coordinate[1]]?.at(coordinate[0]);
-    if (symbol(char)) {
+    if (condition(char)) {
       return true;
     }
   }
   return false;
 };
 
-const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
+function* generatePartNumbers(lines: string[]) {
+  for (const [row, l] of lines.entries()) {
+    const regexp = /\d+/g;
+    let match: RegExpExecArray | null;
 
-  return;
-};
+    const bounds: Schematic = { width: l.length, height: lines.length };
+
+    while ((match = regexp.exec(l)) !== null) {
+      const raw = String(match[0]);
+      const value = Number.parseInt(raw);
+      const start = match.index;
+      const end = regexp.lastIndex - 1;
+
+      const partNumber = { start, end, row, value, raw };
+      const neighbours = Array.from(neighbourhood(partNumber, bounds));
+
+      if (check(symbol, lines, neighbours)) {
+        yield partNumber;
+      }
+    }
+  }
+}
+
+const testInput = `
+467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..
+`;
 
 run({
   part1: {
     tests: [
       {
-        input: `
-        467..114..
-        ...*......
-        ..35..633.
-        ......#...
-        617*......
-        .....+.58.
-        ..592.....
-        ......755.
-        ...$.*....
-        .664.598..
-        `,
+        input: testInput,
         expected: 4361,
       },
     ],
@@ -110,13 +120,13 @@ run({
   },
   part2: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: testInput,
+        expected: 467835,
+      },
     ],
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: false,
+  onlyTests: true,
 });

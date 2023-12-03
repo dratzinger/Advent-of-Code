@@ -4,8 +4,13 @@ const parseInput = (rawInput: string) => rawInput;
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-
-  return;
+  const lines = input.split('\n');
+  const bag = { red: 12, green: 13, blue: 14 };
+  const games = parseGames(lines);
+  console.log(games);
+  const valid = validateGames(games, bag);
+  console.log(valid);
+  return valid.reduce((sum, id) => (sum += id));
 };
 
 const part2 = (rawInput: string) => {
@@ -13,6 +18,44 @@ const part2 = (rawInput: string) => {
 
   return;
 };
+
+type Colour = 'red' | 'blue' | 'green';
+type Bag = Record<Colour, number>;
+type CubeSet = Partial<Bag>;
+type Games = Record<number, CubeSet[]>;
+
+const parseGames = (lines: string[]): Games => {
+  const split = lines.map((line) => line.replace('Game ', '').split(': '));
+  return split
+    .map((record) => {
+      const [id, log] = record;
+      const sets = log.split('; ').map(mapCubeSet);
+      return { [id]: sets };
+    })
+    .reduce((games, record) => ({ ...games, ...record }));
+};
+
+const mapCubeSet = (record: string): CubeSet =>
+  record.split(', ').reduce((set, cubes) => {
+    const [count, colour] = cubes.split(' ');
+    return { ...set, [colour as Colour]: Number.parseInt(count) };
+  }, {});
+
+const validateGames = (games: Games, bag: Bag) => {
+  let valid = [];
+  for (const id in games) {
+    if (games[id].every((set) => validSet(set, bag))) {
+      const i = Number.parseInt(id);
+      valid.push(i);
+    }
+  }
+  return valid;
+};
+
+const validSet = (set: CubeSet, bag: Bag) =>
+  (set.red ?? 0) <= bag.red &&
+  (set.green ?? 0) <= bag.green &&
+  (set.blue ?? 0) <= bag.blue;
 
 run({
   part1: {
@@ -40,5 +83,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });

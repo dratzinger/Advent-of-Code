@@ -21,17 +21,15 @@ const crunch = (lines: string[], pattern: RegExp) =>
   lines
     .map((line) => Array.from(line.matchAll(pattern), (match) => match[1]))
     .map((digits) => {
-      console.log(digits);
       const first = String(digits[0] ?? '');
       const last = String(digits[digits.length - 1] ?? first);
       const d1 = lookup[first] ?? first;
       const d2 = lookup[last] ?? last;
-      const valStr = `${d1}${d2}`;
-      const val = Number.parseInt(valStr);
+      const val = Number.parseInt(`${d1}${d2}`);
       return val;
     })
     .filter(Number.isInteger)
-    .reduce((acc, val) => (acc += val), 0);
+    .reduce((acc, val) => acc + val, 0);
 
 const lookup: { [id: string]: string } = {
   one: '1',

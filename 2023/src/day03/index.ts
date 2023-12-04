@@ -4,20 +4,20 @@ const parseInput = (rawInput: string) => rawInput;
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const lines = input.split('\n');
+  const lines = input.split('\n').filter(Boolean);
 
   return Array.from(generatePartNumbers(lines, symbol))
     .map((n) => n.value)
-    .reduce((sum, num) => (sum += num));
+    .reduce((sum, num) => sum + num);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const lines = input.split('\n');
+  const lines = input.split('\n').filter(Boolean);
 
   const partNumbers = Array.from(generatePartNumbers(lines));
   const gears = Array.from(generateGears(lines, partNumbers));
-  return gears.map((g) => g.ratio).reduce((sum, ratio) => (sum += ratio));
+  return gears.map((g) => g.ratio).reduce((sum, ratio) => sum + ratio);
 };
 
 type Part = {

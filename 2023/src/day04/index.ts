@@ -4,28 +4,22 @@ const parseInput = (rawInput: string) => rawInput;
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const lines = input.split('\n');
-  const raw = lines
-    .map((l) => l.split(': ')[1].split(' | '))
-    .map((c) => c.map((nums) => nums.trim().split(/\ +/)));
-  const points = raw.flatMap(([winning, nums]) => {
+  const points = readCards(input).flatMap(([winning, nums]) => {
     const winningSet = new Set(winning);
-    const i = nums
+    const scores = nums
       .map((n) => winningSet.has(n))
       .filter(Boolean)
       .map((_, i): number => (i === 0 ? 1 : 2));
-    return i.length < 1 ? 0 : i.reduce((p, multiplier) => p * multiplier, 1);
+    return scores.length < 1
+      ? 0
+      : scores.reduce((p, multiplier) => p * multiplier, 1);
   });
-  return points.reduce((sum, p) => (sum += p));
+  return points.reduce((sum, p) => sum + p);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const lines = input.split('\n');
-  const raw = lines
-    .map((l) => l.split(': ')[1].split(' | '))
-    .map((c) => c.map((nums) => nums.trim().split(/\ +/)));
-  const points = raw.flatMap(([winning, nums], id) => {
+  const points = readCards(input).flatMap(([winning, nums], id) => {
     const winningSet = new Set(winning);
     const wins = nums
       .map((n) => winningSet.has(n))
@@ -45,8 +39,15 @@ const part2 = (rawInput: string) => {
       stack.push(points[id]);
     }
   }
-  return cards.reduce((sum, count) => (sum += count));
+  return cards.reduce((sum, count) => sum + count);
 };
+
+const readCards = (input: string) =>
+  input
+    .split('\n')
+    .filter(Boolean)
+    .map((l) => l.split(': ')[1].split(' | '))
+    .map((c) => c.map((nums) => nums.trim().split(/\ +/)));
 
 const testInput = `
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53

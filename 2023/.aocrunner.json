@@ -35,11 +35,7 @@
       "part1": {
         "solved": true,
         "result": "554003",
-        "attempts": [
-          "565219",
-          "543123",
-          "546724"
-        ],
+        "attempts": ["565219", "543123", "546724"],
         "time": 5.0012
       },
       "part2": {
@@ -54,7 +50,7 @@
         "solved": true,
         "result": "23235",
         "attempts": [],
-        "time": 46.6469
+        "time": 3.181264
       },
       "part2": {
         "solved": false,

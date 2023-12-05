@@ -1,9 +1,36 @@
 import run from 'aocrunner';
+import path from 'path';
 
 const parseInput = (rawInput: string) => rawInput;
 
+type AlmanacMap = {
+  source: string;
+  destination: string;
+  mappings: Map<number, number>;
+};
+
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const [s, ...blocks] = input.split('\n\n');
+  const seeds = s.split(' ')
+  const mapMap = new Map<string, AlmanacMap>();
+  const maps =blocks.map(b=>b.split('\n')).map(([first, ...rest])=>{
+    const [source,destination] = first.split(' ')[0].split('-to-');
+    const instructions = rest.map(l=>l.split(' '))
+    const mappings = new Map<number, number>()
+    instructions.forEach(i => {
+      let [destNum, sourceNum, range] = i.map(Number.parseInt)
+      for(let c=range; c>0; c--) {
+        mappings.set(sourceNum, destNum)
+        destNum++
+        sourceNum++
+      }
+    })
+    const result = {source, destination, mappings}
+    mapMap.set(source, result)
+    return 
+  })
+  console.log({mapMap})
 
   return;
 };

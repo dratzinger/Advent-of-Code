@@ -1,5 +1,4 @@
 import run from 'aocrunner';
-import path from 'path';
 
 const parseInput = (rawInput: string) => rawInput;
 
@@ -38,28 +37,23 @@ const part1 = (rawInput: string) => {
 
   const locations = seeds.map((s) => trackSeed(s, maps));
 
-  console.log({ seeds, maps, locations });
-  // console.log(maps.map((a) => a.mappings));
-
-  return;
+  return Math.min(...locations);
 };
 
 const trackSeed = (seed: number, maps: AlmanacMap[]): number => {
-  let current = seed;
-  let next = 'seeds';
-  while (next != 'location') {
-    const map = maps.find((m) => m.source === next);
-    console.log({ map });
-    current = findMapping(current, map?.mappings);
-    next = map?.destination ?? 'location';
+  // the map path in the input is sequential, so I won't bother with pathing
+  let result = seed;
+  for (const map of maps) {
+    result = findMapping(result, map?.mappings);
   }
-  return current;
+  return result;
 };
 
 const findMapping = (target: number, ranges?: Range[]) => {
-  const range = ranges?.find((r) => r.sourceNum >= target);
-  console.log({ range });
-  if (range && target <= range.sourceNum + range.length) {
+  const range = ranges?.find((r) => {
+    return r.sourceNum <= target && r.sourceNum + r.length > target;
+  });
+  if (range) {
     const diff = target - range.sourceNum;
     return range.destNum + diff;
   }
@@ -120,13 +114,13 @@ run({
   },
   part2: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: testInput,
+        expected: 46,
+      },
     ],
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });

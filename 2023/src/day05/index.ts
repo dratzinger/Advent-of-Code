@@ -16,12 +16,41 @@ type Range = {
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const [s, ...blocks] = input.split('\n\n');
-  const seeds = s
+  const [rawSeeds, ...blocks] = input.split('\n\n');
+  const seeds = prepareSeeds(rawSeeds);
+  const maps = prepareMaps(blocks);
+  const locations = seeds.map((s) => trackSeed(s, maps));
+  return Math.min(...locations);
+};
+
+const part2 = (rawInput: string) => {
+  const input = parseInput(rawInput);
+  const [rawSeeds, ...blocks] = input.split('\n\n');
+  const seeds = prepareSeeds(rawSeeds);
+  const maps = prepareMaps(blocks);
+
+  let seed, end;
+  let minLocation = Infinity;
+  while (seeds.length > 1) {
+    seed = seeds.shift() ?? 0;
+    end = (seeds.shift() ?? 0) + seed;
+    while (seed <= end) {
+      const location = trackSeed(seed, maps);
+      minLocation = Math.min(location, minLocation);
+      seed++;
+    }
+  }
+  return minLocation;
+};
+
+const prepareSeeds = (raw: string) =>
+  raw
     .split(' ')
     .map((n) => Number.parseInt(n))
     .filter((n) => !Number.isNaN(n));
-  const maps = blocks
+
+const prepareMaps = (blocks: string[]) =>
+  blocks
     .map((b) => b.split('\n'))
     .map(([first, ...rest]) => {
       const [source, destination] = first.split(' ')[0].split('-to-');
@@ -34,11 +63,6 @@ const part1 = (rawInput: string) => {
         .sort((a, b) => a.sourceNum - b.sourceNum);
       return { source, destination, mappings };
     });
-
-  const locations = seeds.map((s) => trackSeed(s, maps));
-
-  return Math.min(...locations);
-};
 
 const trackSeed = (seed: number, maps: AlmanacMap[]): number => {
   // the map path in the input is sequential, so I won't bother with pathing
@@ -58,12 +82,6 @@ const findMapping = (target: number, ranges?: Range[]) => {
     return range.destNum + diff;
   }
   return target;
-};
-
-const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-
-  return;
 };
 
 const testInput = `

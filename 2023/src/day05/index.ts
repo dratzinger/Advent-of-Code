@@ -6,33 +6,64 @@ const parseInput = (rawInput: string) => rawInput;
 type AlmanacMap = {
   source: string;
   destination: string;
-  mappings: Map<number, number>;
+  mappings: Range[];
+};
+
+type Range = {
+  sourceNum: number;
+  destNum: number;
+  length: number;
 };
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const [s, ...blocks] = input.split('\n\n');
-  const seeds = s.split(' ')
-  const mapMap = new Map<string, AlmanacMap>();
-  const maps =blocks.map(b=>b.split('\n')).map(([first, ...rest])=>{
-    const [source,destination] = first.split(' ')[0].split('-to-');
-    const instructions = rest.map(l=>l.split(' '))
-    const mappings = new Map<number, number>()
-    instructions.forEach(i => {
-      let [destNum, sourceNum, range] = i.map(Number.parseInt)
-      for(let c=range; c>0; c--) {
-        mappings.set(sourceNum, destNum)
-        destNum++
-        sourceNum++
-      }
-    })
-    const result = {source, destination, mappings}
-    mapMap.set(source, result)
-    return 
-  })
-  console.log({mapMap})
+  const seeds = s
+    .split(' ')
+    .map((n) => Number.parseInt(n))
+    .filter((n) => !Number.isNaN(n));
+  const maps = blocks
+    .map((b) => b.split('\n'))
+    .map(([first, ...rest]) => {
+      const [source, destination] = first.split(' ')[0].split('-to-');
+      const instructions = rest.map((l) => l.split(' '));
+      const mappings = instructions
+        .map((i): Range => {
+          let [destNum, sourceNum, length] = i.map((n) => Number.parseInt(n));
+          return { sourceNum, destNum, length };
+        })
+        .sort((a, b) => a.sourceNum - b.sourceNum);
+      return { source, destination, mappings };
+    });
+
+  const locations = seeds.map((s) => trackSeed(s, maps));
+
+  console.log({ seeds, maps, locations });
+  // console.log(maps.map((a) => a.mappings));
 
   return;
+};
+
+const trackSeed = (seed: number, maps: AlmanacMap[]): number => {
+  let current = seed;
+  let next = 'seeds';
+  while (next != 'location') {
+    const map = maps.find((m) => m.source === next);
+    console.log({ map });
+    current = findMapping(current, map?.mappings);
+    next = map?.destination ?? 'location';
+  }
+  return current;
+};
+
+const findMapping = (target: number, ranges?: Range[]) => {
+  const range = ranges?.find((r) => r.sourceNum >= target);
+  console.log({ range });
+  if (range && target <= range.sourceNum + range.length) {
+    const diff = target - range.sourceNum;
+    return range.destNum + diff;
+  }
+  return target;
 };
 
 const part2 = (rawInput: string) => {
@@ -97,5 +128,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: false,
+  onlyTests: true,
 });

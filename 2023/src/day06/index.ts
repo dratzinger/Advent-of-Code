@@ -4,17 +4,19 @@ const parseInput = (rawInput: string) => rawInput;
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const [times, records] = input.split('\n').map((line) =>
-    line
-      .split(/\ +/)
-      .map((n) => Number.parseInt(n))
-      .filter((i) => !Number.isNaN(i)),
-  );
+  const [times, records] = sheet(input);
   const possibilities = (time: number, i: number): number =>
     time - (beatRecord(time, records[i]) * 2 - 1);
 
   return times.map(possibilities).reduce((sum, c) => sum * c);
 };
+
+const sheet = (input: string, badKerning = false) =>
+  input.split('\n').map((line) => {
+    const nums = line.replace(/.*: */, '').split(/\ +/);
+    const k = badKerning ? [nums.reduce((n, i) => n + i)] : nums;
+    return k.map((n) => Number.parseInt(n));
+  });
 
 const raceDistance = (availableTime: number, holdTime: number) =>
   holdTime * (availableTime - holdTime);
@@ -28,8 +30,11 @@ const beatRecord = (available: number, record: number) => {
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const [times, records] = sheet(input, true);
+  const possibilities = (time: number, i: number): number =>
+    time - (beatRecord(time, records[i]) * 2 - 1);
 
-  return;
+  return times.map(possibilities)[0];
 };
 
 const testInput = `
@@ -48,10 +53,10 @@ run({
   },
   part2: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: testInput,
+        expected: 71503,
+      },
     ],
     solution: part2,
   },

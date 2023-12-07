@@ -5,10 +5,13 @@ const parseInput = (rawInput: string) => rawInput;
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const [times, records] = sheet(input);
-  const possibilities = (time: number, i: number): number =>
-    time - (beatRecord(time, records[i]) * 2 - 1);
+  return times.map(possibilities(records)).reduce((sum, c) => sum * c);
+};
 
-  return times.map(possibilities).reduce((sum, c) => sum * c);
+const part2 = (rawInput: string) => {
+  const input = parseInput(rawInput);
+  const [times, records] = sheet(input, true);
+  return times.map(possibilities(records))[0];
 };
 
 const sheet = (input: string, badKerning = false) =>
@@ -23,19 +26,15 @@ const raceDistance = (availableTime: number, holdTime: number) =>
 
 // Minimum hold time to beat the record
 const beatRecord = (available: number, record: number) => {
-  for (let t = 1; t < available; t++)
-    if (raceDistance(available, t) > record) return t;
+  for (let time = 1; time < available; time++)
+    if (raceDistance(available, time) > record) return time;
   return 0;
 };
 
-const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  const [times, records] = sheet(input, true);
-  const possibilities = (time: number, i: number): number =>
+const possibilities =
+  (records: number[]) =>
+  (time: number, i: number): number =>
     time - (beatRecord(time, records[i]) * 2 - 1);
-
-  return times.map(possibilities)[0];
-};
 
 const testInput = `
 Time:      7  15   30

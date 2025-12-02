@@ -5,14 +5,12 @@ const parseInput = (rawInput: string) => rawInput;
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   let dial = 50;
-  let count = 0;
-  input.split("\n").forEach((current) => {
+  return input.split("\n").reduce((count, current) => {
     const left = current.slice(0, 1) === "L";
     const amt = Number(current.slice(1));
     dial = (left ? dial - amt : dial + amt) % 100;
-    count = count + (dial === 0 ? 1 : 0);
-  });
-  return String(count);
+    return count + (dial === 0 ? 1 : 0);
+  }, 0);
 };
 
 const part2 = (rawInput: string) => {

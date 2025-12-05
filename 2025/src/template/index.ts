@@ -14,23 +14,15 @@ const part2 = (rawInput: string) => {
   return;
 };
 
+const input = ``;
+
 run({
   part1: {
-    tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
-    ],
+    tests: [{ input, expected: "" }],
     solution: part1,
   },
   part2: {
-    tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
-    ],
+    tests: [{ input, expected: "" }],
     solution: part2,
   },
   trimTestInputs: true,

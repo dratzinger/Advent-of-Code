@@ -1,9 +1,10 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string) => rawInput.split("\n");
+const parseInput = (rawInput: string) =>
+  rawInput.split("\n").map((s) => Array.from(s));
 
 const part1 = (rawInput: string) => {
-  const joltages = parseInput(rawInput).map((s) => Array.from(s));
+  const joltages = parseInput(rawInput);
   return joltages
     .map((j) =>
       j.reduce((max, cur, idx, arr) => {
@@ -16,22 +17,24 @@ const part1 = (rawInput: string) => {
     .reduce((acc: number, j: number) => acc + j);
 };
 
-const cavemanCombinationSum = (j: string) =>
-  Array.of(j)
-    .flatMap((s) => Array(s.length).fill(s).map(dropCharAtIndex))
-    .flatMap((s) => Array(s.length).fill(s).map(dropCharAtIndex))
-    .flatMap((s) => Array(s.length).fill(s).map(dropCharAtIndex))
-    .map(Number)
-    .sort()
-    .pop() ?? 0;
-
-const dropCharAtIndex = (str: string, i: number) =>
-  str.slice(0, i) + str.slice(i + 1);
-
 const part2 = (rawInput: string) => {
   const joltages = parseInput(rawInput);
-  const sums = joltages.map(cavemanCombinationSum);
-  return sums.reduce((acc, j) => acc + j);
+  const sums = joltages.map((j) =>
+    Array.from(j)
+      .map((val, idx, arr) => ({
+        val,
+        idx,
+        weight: (Number(val) * arr.length) / (arr.length - idx),
+      }))
+      .sort((a, b) => a.weight - b.weight)
+      .slice(-12)
+      .sort((a, b) => a.idx - b.idx)
+      .map((el) => el.val)
+      .reduce((sum, char) => sum + char),
+  );
+  const converted = sums.map(Number);
+  const len = sums.map((s) => s.length);
+  return converted.reduce((acc: number, j: number) => acc + j);
 };
 
 const input = `

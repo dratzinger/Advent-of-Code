@@ -17,9 +17,21 @@ const part1 = (rawInput: string) => {
 };
 
 const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-
-  return;
+  const { ranges } = parseInput(rawInput);
+  const merged = [] as Range[];
+  let temp = [0, 0] as Range;
+  ranges
+    .sort((a, b) => a[0] - b[0])
+    .forEach(([start, end]) => {
+      const overlap = start >= temp[0] && start <= temp[1];
+      if (overlap) {
+        temp[1] = Math.max(end, temp[1]);
+      } else {
+        temp = [start, end];
+        merged.push(temp);
+      }
+    });
+  return merged.reduce((sum, r) => sum + r[1] - r[0] + 1, 0);
 };
 
 const input = `
@@ -42,7 +54,7 @@ run({
     solution: part1,
   },
   part2: {
-    tests: [{ input, expected: "" }],
+    tests: [{ input, expected: 14 }],
     solution: part2,
   },
   trimTestInputs: true,

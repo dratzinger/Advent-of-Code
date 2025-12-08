@@ -9,12 +9,10 @@ const splitter = "^";
 const parseInput = (rawInput: string): Matrix<string> =>
   rawInput.split("\n").map((s) => Array.from(s));
 
-const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  let count = 0;
+const simulateTachyonManifold = (input: Matrix<string>) => {
+  let splits = 0;
+  let paths = 0;
   input.forEach((current, index, array) => {
-    const updated = [...current];
-
     const setBeamIfEmpty = (pos: number) => {
       if (current[pos] === empty) current[pos] = beam;
     };
@@ -25,21 +23,35 @@ const part1 = (rawInput: string) => {
         if (current[i] === splitter) {
           setBeamIfEmpty(i - 1);
           setBeamIfEmpty(i + 1);
-          count++;
+          splits++;
         }
       }
     };
 
     const previous = array[index - 1];
     previous?.forEach(continueOrSplitBeam);
+
+    if (current.includes(splitter)) {
+      const beams = current.reduce(
+        (count, p) => (p === beam ? count + 1 : count),
+        0,
+      );
+      paths += beams;
+    }
   });
-  return count;
+  return { splits, paths };
+};
+
+const part1 = (rawInput: string) => {
+  const input = parseInput(rawInput);
+  const { splits } = simulateTachyonManifold(input);
+  return splits;
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-
-  return;
+  const { paths } = simulateTachyonManifold(input);
+  return paths;
 };
 
 const input = `
@@ -67,7 +79,7 @@ run({
     solution: part1,
   },
   part2: {
-    tests: [{ input, expected: "" }],
+    tests: [{ input, expected: 40 }],
     solution: part2,
   },
   trimTestInputs: true,

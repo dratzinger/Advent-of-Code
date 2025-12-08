@@ -1,11 +1,11 @@
 import run from "aocrunner";
+import { transposeMatrix } from "../utils/matrix.js";
 
 type Matrix<T> = T[][];
-const parseInput = (rawInput: string): Matrix<string> =>
-  rawInput.split("\n").map((l) => l.trim().split(/\s+/));
+const parseInput = (rawInput: string) => rawInput.split("\n");
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
+  const input = parseInput(rawInput).map((l) => l.trim().split(/\s+/));
   const results = [] as number[];
   for (let col = 0; col < input[0].length; col++) {
     const op = input.at(-1)?.at(col);
@@ -22,8 +22,27 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const transposed = transposeMatrix(input) as Matrix<string>;
+  const stack = [] as number[];
+  let op: string;
+  let total = 0;
+  [...transposed, null].forEach((l) => {
+    if (l?.at(-1) === "*" || l?.at(-1) === "+") op = l.pop();
 
-  return;
+    const line = l?.join("")?.trim();
+    if (!line) {
+      let result = op === "*" ? 1 : 0;
+      while (stack.length > 0) {
+        let val = stack.pop();
+        if (op === "*") result *= val;
+        else result += val;
+      }
+      total += result;
+    } else {
+      stack.push(Number(line));
+    }
+  });
+  return total;
 };
 
 const input = `
@@ -39,9 +58,9 @@ run({
     solution: part1,
   },
   part2: {
-    tests: [{ input, expected: "" }],
+    tests: [{ input, expected: 3263827 }],
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });

@@ -29,3 +29,5 @@
  *     import { myUtil } from '../utils'
  *
  */
+
+export * from "../utils/matrix";
